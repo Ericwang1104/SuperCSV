@@ -1,0 +1,24 @@
+object DM: TDM
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  OldCreateOrder = False
+  Height = 323
+  HorizontalOffset = 365
+  VerticalOffset = 227
+  Width = 682
+  object DBCN: TUniConnection
+    left = 72
+    top = 32
+  end
+  object dbMeta: TUniMetaData
+    FilterOptions = []
+    Connection = DBCN
+    left = 151
+    top = 32
+  end
+  object UniLoader1: TUniLoader
+    Connection = DBCN
+    left = 208
+    top = 32
+  end
+end

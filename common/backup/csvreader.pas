@@ -1,0 +1,1654 @@
+﻿unit csvreader;
+{$IFDEF FPC}
+{$mode objfpc}{$H+}
+ {$ModeSwitch advancedrecords}
+{$ENDIF}
+interface
+
+uses
+{$IFDEF FPC}
+ Classes,SysUtils, ObjectHash, dbugintf,strUtils,fgl;
+{$ELSE}
+	System.Classes,ObjectHash,System.Generics.Collections, System.IniFiles, system.SysUtils, System.StrUtils;
+{$ENDIF}
+const
+	DEFAULT_BUFFER_SIZE=16*1024*1024; //默认16M
+  DEFAULT_FREE_CAPACITY=128*1024; //默认128k 估计不会超过128k 一行
+  MAX_FREE_CAPACITY=64*1024*1024; //最大剩余256M
+type
+  TColType=(cString,cByte,cSmallint,cInteger,cInt64,cFloat,cDate,cDatetime,cUnknow);
+	TCode=(cUnknown,cAuto,cAnsi,cUnicode16LE,cUnicode16BE,cUtf8);
+	TCodePage=(cp_None=0,cp_UTF7=65000,cp_UTF8=65001,
+	cp_Latin_US=437,cp_Western_DOS_Lantin1=850,cp_Thai=874,cp_Japanese=932,cp_Simplified_Chinese=936,
+	cp_Korean=949,cp_Traditional_Chinese=950,cp_UTF16=1200,cp_UTF16_BE=1201,
+	cp_Central_European_Windows_Latin2=1250,cp_Cyrillic=1251,cp_Western_Windows_Latin1=1252,cp_Greek=1253,
+	cp_Turkish=1254,cp_Hebrew=1255,cp_Arabic=1256,cp_Baltic=1257,cp_Vietnamese=1258,
+	cp_ASCII=20127);
+	TRowState=(rStart,rLEnd);
+	TColState=(colStart,colEnd,cLEnd);
+  TOnCsvFilterEvent=procedure(var blnFilter:boolean) of object;
+	PRowIndex =^TRowIndex;
+
+  { TRowIndex }
+
+	TRowIndex=Packed record
+    PRowS:PAnsichar;
+    PRowE:PAnsiChar;
+  private
+    function GetRowSize:integer;
+  public
+    property RowSize:integer read GetRowSize;
+  end;
+  TRowIndexArr=array of TRowIndex;
+
+
+  PCsvDataItem=^TCsvDataItem;
+
+  { TCsvDataItem }
+  TCsvDataItem=packed record
+    PS:PAnsiChar;
+    PE:PAnsiChar;
+  public
+    function Size:int64;
+    function AsRawString: RawByteString;
+    function AsUtf8: UTF8String;
+    function ConvertCode(SEncoding,DEncoding:Tencoding):string;
+  end;
+  PCsvDataArr=^TCsvDataArr;
+  TCsvDataArr=array of TCsvDataItem;
+  TCSVDDataMatrix= array of TCsvDataArr;
+
+  { TCSVDataRec }
+
+  TCSVDataRec=record
+  private
+    FCsvDataArr:TCsvDataArr;
+    FTrueCount:integer;
+    function GetCount: integer;
+    function GetCsvDataItem(Index:integer):TCsvDataItem;
+    function GetPcsvDataItem(Index: integer): PCsvDataItem;
+    function GetTrueCount: integer;
+    procedure SetCsvDataItem(Index:integer;AValue: TCsvDataItem);
+    procedure SetTrueCount(AValue: integer);
+  public
+    procedure Clear;
+    procedure SetDataItemCount(Count:integer);
+    property Count:integer read GetCount;
+    property CsvDataItem[Index:integer]:TCsvDataItem read GetCsvDataItem write SetCsvDataItem; default;
+    property PItem[Index:integer]:PCsvDataItem Read GetPcsvDataItem;
+    property TrueCount:integer read GetTrueCount write SetTrueCount;
+  end;
+
+
+  { TColumnItem }
+
+  TColumnItem = class(TCollectionItem)
+  strict private
+    FCol: Integer;
+    FColType: TColType;
+    FColumnName: string;
+    FPCsvColData: PCsvDataItem;
+    procedure SetPCsvColData(const Value: PCsvDataItem);
+	private
+    FColKey: string;
+		FDCode: TEncoding;
+		FDesCodePage: TCodePage;
+		FEnableCodeConvert: Boolean;
+		FSCode: TEncoding;
+		FSouceCodePage: TCodePage;
+		procedure SetEnableCodeConvert(const Value: Boolean);
+  protected
+  public
+		constructor Create(aCollection: TCollection); override;
+    destructor Destroy;override;
+    function ValueAsByte():byte;
+    function ValueAsSmallInt():SmallInt;
+    function ValueAsInteger():integer;
+    function ValueAsInt64():int64;
+    function ValueAsString():string;
+    function ValueAsFloat():double;
+    function ValueAsDate():TDate;
+    function ValueAsDateTime():TDateTime;
+    function ReName(const ColumnName:string):boolean;
+    property Col: Integer read FCol write FCol;
+    property ColumnName: string read FColumnName write FColumnName;
+    property PCsvColData: PCsvDataItem read FPCsvColData write SetPCsvColData;
+    property ColType:TColType read FColType Write FColType;
+
+	published
+		property DesCodePage: TCodePage read FDesCodePage write FDesCodePage;
+		property EnableCodeConvert: Boolean read FEnableCodeConvert write
+				SetEnableCodeConvert;
+		property SouceCodePage: TCodePage read FSouceCodePage write FSouceCodePage;
+    property ColKey:string read FColKey write FColKey;
+	end;
+
+  { TColumns }
+
+  TColumns = class(TCollection)
+  private
+    FHash: TObjectHash;
+    function GetColumnItem(Index: Integer): TColumnItem;
+    function GetTitle:string;
+  public
+		constructor Create(AItemClass: TCollectionItemClass);
+    destructor Destroy; override;
+    function AddColumn(const ColumnName: string; const Col: Integer = -1):
+        TColumnItem;
+    procedure Clear;
+    function ColumnByName(const ColumnName: string): TColumnItem;
+    function ColumnExists(ColName: string): Boolean;
+		property ColumnItem[Index: Integer]: TColumnItem read GetColumnItem;default;
+    property Title:string read GetTitle;
+  end;
+  {$IFDEF FPC}
+		 TRowList=specialize TFPGLIST<PCsvDataArr>;
+  {$ELSE}
+     TRowList=TList<PCsvDataArr>;
+  {$ENDIF}
+
+   { TDataIndex }
+
+  TDataIndex =class(TPersistent)
+  private
+    FDataM:TCSVDDataMatrix;
+    FList:TRowList;
+    FColCount:integer;
+    function GetCsvDataitem(Row,Col:integer):TCsvDataItem;
+    function GetPCsvDataItem(Row, Col: integer): PCsvDataItem;
+    function GetRowCount: integer;
+    procedure SetCSVDataitem(Row,Col:integer;Item:TCsvDataItem);
+  public
+    constructor Create;virtual;
+    destructor Destroy;override;
+    procedure SetMatrix(RowCount:integer;ColCount:integer);
+    procedure Clear;
+
+    procedure AppendNewRow(ColCount:integer);
+    property DataItem[Row,Col:integer]:TCsvDataItem read GetCsvDataItem write SetCsvDataItem;
+    property PDataItem[Row,Col:integer]:PCsvDataItem read GetPCsvDataItem;
+    property RowCount:integer read GetRowCount;
+  end;
+  { TCsvReader }
+
+  TCsvReader = class(TPersistent)
+  strict private
+    FBufferSize:int64;
+    FRowIndexArr:TRowIndexArr;
+    FDataIndex:TDataIndex;
+
+
+    procedure BuildRowIndex();
+    function InitBuffer(BufferSize:int64=0):int64;
+
+    //清除缓冲区内容
+    procedure ClearBufferContent();
+
+  private
+    FFileName:string;
+    FFreeCapacity:int64; //缓冲之外的剩余容量。
+    FFreeCharLength: int64; //剩余字符数；不够一行 未包含换行符
+    FOnFilterEvent:TOnCsvFilterEvent; //筛选事件
+    FBuffer: Tbytes;  //缓冲字节数组
+    FCharLength: byte;
+    FCurrentDataRec: TCSVDataRec;
+		FEnCode: TCode;
+    FColumns: TColumns;
+    FDataEnd: Boolean;
+    FFileSize: int64;
+    FDataPos: int64;
+    FRowIndex:TRowIndex;
+    FPRow:PRowIndex;
+    //FPLineEnd: PAnsiChar;
+    //FPLineStart: PAnsiChar;
+    FPBufferEnd: PAnsiChar;
+    FPLastLF: PAnsiChar;
+    FPBufferStart: PAnsiChar;
+    FS: TFileStream;
+    FSplitChar: AnsiChar;
+    function GetActive: boolean;
+    function GetColCount: Integer;
+    function GetPCSVDataItem(Index: Integer): PCsvDataItem;
+    function GetCSVDataRow(Index: Integer): string;
+    function ParserData(const PS, PE: PAnsiChar):integer;
+    procedure ReadHeader(const PS, PE: PAnsiChar;Header_Prefix:string='');
+    function ReadRow: Boolean;
+    function ReadToBuffer: Boolean;
+    procedure SetBufferCapacity(AValue: int64);
+		function GetRowIndexItem(Index :integer): PRowIndex;
+    procedure SetColCount(const Value: Integer);
+    function CalBufferSize(PackageCount,FileSize:int64):Int64;
+    function GetBufferCount:int64;
+    function GetPosition:int64;
+    function GetBufferCapacity:int64;
+    function GetCellData(Row,Col:int64):PCsvDataItem;
+
+    function GetBufferRowCount:int64;
+    procedure SetBufferSize(Value:int64);
+  protected
+
+  public
+    property BufferCapacity:int64 read GetBufferCapacity write SetBufferCapacity;
+    constructor Create();
+    destructor Destroy; override;
+    function BuildRawString(PS, PE: PAnsiChar): RawByteString;
+    function GetRowString: rawbytestring;
+    function ReadLine: Boolean;
+    function GetCellString(Row,Col:int64):string;
+    procedure OpenFile(const CSVFile: string; LoadHeader: Boolean = true; BufferSize:int64=0);  //buffersize=0 auto cal buffersize;
+    function ReadUnicodeString(const Utf8Str: RawByteString): string;
+    procedure SetHeaderCount(HeaderCount: Integer);
+    function ForeCastBufferRowCount: int64;   //预测行号
+    function GetSize:int64;
+    function ForecastLineCount:int64;
+    procedure MoveToBuffer(Index:int64);  //移动到指定缓冲区
+    procedure MoveToFirst;
+    procedure BuildMatrixIndex;
+    function BuildDataIndex():TDataIndex;
+    procedure ParserRowIndex(const Index:integer); //解析制定行数据数组项
+    property CharLength: byte read FCharLength write FCharLength;
+    property ColCount: Integer read GetColCount write SetColCount;
+    property CSVDataRow[Index: Integer]: string read GetCSVDataRow;
+		property EnCode: TCode read FEnCode write FEnCode;
+		property Columns: TColumns read FColumns;
+    property PCSVDataItems[Index: Integer]: PCsvDataItem read GetPCSVDataItem;
+    property PLineEnd: PAnsiChar read FRowIndex.PRowE;
+    property PLineStart: PAnsiChar read FRowIndex.PRowS;
+    property SplitChar: AnsiChar read FSplitChar write FSplitChar;
+    property Size:int64 read GetSize;
+    property BufferCount:int64 read GetBufferCount;
+    property Position:int64 read GetPosition;
+    property CellData[Row,Col:int64]:PCsvDataItem Read GetCellData;
+    property BufferRowCount:int64 read GetBufferRowCount;
+    property BufferSize:int64 read FBufferSize Write SetBufferSize;
+		property PCurrentRow:PRowIndex read FPRow;
+		property RowIndexItem[Index :integer]: PRowIndex read GetRowIndexItem;
+		property Active:boolean read GetActive;
+		property DataIndex:TDataIndex Read FDataIndex;
+		property PBuffer:PAnsiChar read FPBufferStart;
+	published
+    property OnFilterEvent:TOnCsvFilterEvent Read FOnFilterEvent Write FOnFilterEvent;
+    function LineIsUTF8: Boolean;
+
+  end;
+
+  { TCsvWriter }
+
+  TCsvWriter=class(TPersistent)
+  private
+    FStream:TFileStream;
+    FAppendSize:int64;
+    function GetActive: Boolean;
+    function GetFileSize:int64;
+    procedure SetActive(AValue: Boolean);
+  public
+    destructor Destroy;override;
+    procedure AddTitle(Title:string);
+    procedure AppendData(PRow:PRowIndex);
+    procedure ConvertData(Columns:TColumns); //
+    procedure WriteCSVFile(FileName:string);
+    property Active:Boolean read GetActive;
+    property Size:int64 read FAppendSize;
+  end;
+
+
+
+ function ConvertString(const RawString: RawByteString; const Code: TCode):
+  ansistring;
+
+implementation
+
+
+function ConvertString(const RawString: RawByteString; const Code: TCode):
+        ansistring;
+begin
+
+  if Code=cUtf8 then
+     Result := UTF8Decode(RawString)
+   else
+     Result :=RawString;
+end;
+
+{ TCSVDataRec }
+
+function TCSVDataRec.GetCsvDataItem(Index: integer): TCsvDataItem;
+begin
+  result :=FCsvDataArr[Index];
+end;
+
+function TCSVDataRec.GetPcsvDataItem(Index: integer): PCsvDataItem;
+begin
+  result :=@FCsvDataArr[Index];
+end;
+
+function TCSVDataRec.GetTrueCount: integer;
+begin
+  result :=FTrueCount;
+end;
+
+function TCSVDataRec.GetCount: integer;
+begin
+  result :=Length(FCsvDataArr);
+end;
+
+procedure TCSVDataRec.SetCsvDataItem(Index: integer; AValue: TCsvDataItem);
+begin
+  FCsvDataArr[Index] :=AValue;
+end;
+
+procedure TCSVDataRec.SetTrueCount(AValue: integer);
+begin
+  FTrueCount :=AValue;
+end;
+
+procedure TCSVDataRec.Clear;
+var
+  I:integer;
+begin
+  for i := 0 to Length(FCsvDataArr)-1 do
+  begin
+    FCsvDataArr[I].PS:=nil;
+    FCsvDataArr[I].PE:=nil;
+  end;
+
+end;
+
+procedure TCSVDataRec.SetDataItemCount(Count: integer);
+begin
+  SetLength(FCsvDataArr,Count);
+end;
+
+{ TCsvWriter }
+
+function TCsvWriter.GetFileSize: int64;
+begin
+  result :=FAppendSize;
+end;
+
+procedure TCsvWriter.SetActive(AValue: Boolean);
+begin
+
+end;
+
+function TCsvWriter.GetActive: Boolean;
+begin
+  result :=Assigned(Fstream);
+end;
+
+destructor TCsvWriter.Destroy;
+begin
+  if Assigned(FStream) then FreeAndNil(FStream);
+  inherited;
+end;
+
+procedure TCsvWriter.AddTitle(Title: string);
+var
+  rawTitle:RawByteString;
+
+begin
+  RawTitle :=Title;
+  RawTitle :=Title+#13+#10;
+  Fstream.Write(rawTitle[1],Length(RawTitle));
+
+end;
+
+procedure TCsvWriter.AppendData(PRow: PRowIndex);
+
+begin
+
+  FStream.WriteBuffer(PRow^.PRowS^,PRow^.RowSize);
+  inc(FAppendSize,Prow^.RowSize);
+end;
+
+procedure TCsvWriter.ConvertData(Columns: TColumns);
+var
+  I:integer;
+  Item:TColumnItem;
+  RowData:RawByteString;
+begin
+  RowData :='';
+  for I := 0 to Columns.Count-1 do
+  begin
+    Item :=Columns[I];
+    if RowData='' then
+       RowData :='"'+ Item.ValueAsString()+'"'
+    else
+      RowData :=RowData+','+'"'+Item.ValueAsString()+'"';
+  end;
+  RowData :=RowData+#13+#10;
+  FStream.WriteBuffer(RowData[1],Length(RowData));
+end;
+
+procedure TCsvWriter.WriteCSVFile(FileName: string);
+begin
+  if Assigned(FStream) then FreeAndnil(FStream);
+  FStream :=TFileStream.Create(FileName,fmCreate);
+  FAppendSize :=0;
+end;
+
+{ TRowIndex }
+
+function TRowIndex.GetRowSize:integer;
+begin
+  result :=PRowE-PRowS+1;
+end;
+
+{ TCSVIndex }
+
+function TDataIndex.GetCsvDataitem(Row, Col: integer): TCsvDataItem;
+begin
+  result :=FDataM[Row,Col];
+end;
+
+function TDataIndex.GetPCsvDataItem(Row, Col: integer): PCsvDataItem;
+begin
+  result :=@FdataM[Row,Col];
+end;
+
+function TDataIndex.GetRowCount: integer;
+begin
+  result :=Length(FdataM);
+end;
+
+procedure TDataIndex.SetCSVDataitem(Row, Col: integer; Item: TCsvDataItem);
+begin
+  FDataM[row,Col] :=Item;
+end;
+
+constructor TDataIndex.Create;
+begin
+  inherited;
+  FList :=TRowList.Create;
+end;
+
+destructor TDataIndex.Destroy;
+begin
+  FreeAndNil(FList);
+  inherited;
+end;
+
+procedure TDataIndex.SetMatrix(RowCount: integer; ColCount: integer);
+var
+  I,J:integer;
+begin
+  //设置矩阵大小
+  SetLength(FDataM,RowCount,ColCount);
+  for I := Low(FDataM) to High(FDataM) do
+  begin
+    for J :=Low(FDataM[I])  to High(FDataM[I]) do
+    begin
+      FDataM[I,J].PS :=nil;
+      FDataM[I,J].PE :=nil;
+    end;
+  end;
+
+end;
+
+procedure TDataIndex.Clear;
+begin
+  SetLength(FdataM,0,0);
+end;
+
+procedure TDataIndex.AppendNewRow(ColCount: integer);
+var
+  I:integer;
+begin
+
+  SetLength(FDataM,Length(FdataM)+1,ColCount);
+
+    for I := 0 to Length(FdataM[High(FdataM)])-1 do
+    begin
+      FDataM[High(FdataM),I].PS :=nil;
+      FdataM[High(FdataM),I].PE :=nil;
+    end;
+
+end;
+
+
+{TColumns}
+constructor TColumns.Create(AItemClass: TCollectionItemClass);
+begin
+  inherited ;
+  FHash := TObjectHash.Create(4096);
+end;
+
+destructor TColumns.Destroy;
+begin
+  FreeAndNil(FHash);
+  inherited Destroy;
+end;
+
+function TColumns.AddColumn(const ColumnName: string; const Col: Integer = -1):
+    TColumnItem;
+var
+
+  ColName:string;
+begin
+  ColName :=ColumnName;
+  ColName :=ReplaceStr(ColName,#13,'');
+  ColName :=ReplaceStr(ColName,#10,'');
+  result :=FHash.ValueOf(UpperCase(ColName)) as TColumnItem;
+  if not Assigned(result) then
+  begin
+    result :=TColumnItem.Create(Self);
+    result.ColumnName :=ColumnName;
+    if Col=-1 then
+      result.Col :=result.Index +1
+    else
+      result.Col :=Col;
+    result.ColKey :=colName;
+    FHash.AddObject(UpperCase(colName),result);
+  end;
+end;
+
+procedure TColumns.Clear;
+begin
+	FHash.Clear;
+ 	(Self as TCollection).Clear;
+end;
+
+function TColumns.ColumnByName(const ColumnName: string): TColumnItem;
+var
+  Index:Integer;
+begin
+  result :=FHash.ValueOf(UpperCase(ColumnName)) as TColumnItem;
+end;
+
+function TColumns.ColumnExists(ColName: string): Boolean;
+begin
+  result :=self.FHash.Exits(UpperCase(ColName));
+end;
+
+function TColumns.GetColumnItem(Index: Integer): TColumnItem;
+begin
+
+  Result := self.Items[Index] as TColumnItem;
+end;
+
+function TColumns.GetTitle: string;
+var
+  I:integer;
+begin
+  result :='';
+  for i := 0 to Count-1 do
+  begin
+    if result <>'' then
+      result :=result +','+'"'+ColumnItem[I].ColumnName+'"'
+    else
+      result :='"'+ColumnItem[I].ColumnName+'"';
+  end;
+
+end;
+
+{TCSVReader}
+constructor TCsvReader.Create();
+begin
+  inherited Create;
+
+  FRowIndex.PRowS :=nil;
+  FRowIndex.PRowE :=nil;
+  FPRow :=@FRowIndex;
+  FCharLength :=1;
+  FColumns :=TColumns.Create(TColumnItem);
+  FDataIndex :=TDataIndex.Create;
+  FSplitChar :=',';
+
+end;
+
+
+destructor TCsvReader.Destroy;
+begin
+  FreeAndNil(FDataIndex);
+  FreeAndnil(FColumns);
+  if Assigned(FS) then
+    FreeAndNil(FS);
+  inherited ;
+end;
+
+function TCsvReader.BuildRawString(PS, PE: PAnsiChar): RawByteString;
+
+begin
+  SetLength(result,PE-PS+1);
+  Move(PS^,result[1],PE-PS+1);
+
+end;
+
+function TCsvReader.GetColCount: Integer;
+begin
+  Result :=FColumns.Count;
+end;
+
+function TCsvReader.GetActive: boolean;
+begin
+  if Assigned(FS) then
+  begin
+    result :=true;
+  end else
+  begin
+    result :=false;
+  end;
+end;
+
+
+
+
+
+function TCsvReader.GetPCSVDataItem(Index: Integer): PCsvDataItem;
+
+begin
+  result :=FCurrentDataRec.PItem[Index];
+end;
+
+function TCsvReader.GetCSVDataRow(Index: Integer): string;
+begin
+  Result :=ConvertString( FCurrentDataRec[Index].AsRawString ,FEnCode);
+end;
+
+function TCsvReader.GetRowString: rawbytestring;
+begin
+  Result :=BuildRawString(FRowIndex.PRowS,FRowIndex.PRowE);
+end;
+
+function TCsvReader.InitBuffer(BufferSize:int64):int64;
+var
+  FreeCapacity:int64;
+begin
+  if BufferSize<=0 then BufferSize :=DEFAULT_BUFFER_SIZE;
+  FreeCapacity := round(BufferSize *0.1);
+  if FreeCapacity <DEFAULT_FREE_CAPACITY then FreeCapacity :=DEFAULT_FREE_CAPACITY;
+  if FreeCapacity>MAX_FREE_CAPACITY then FreeCapacity :=MAX_FREE_CAPACITY;
+  //指定缓冲区大小
+  SetLength(Fbuffer,BufferSize+FreeCapacity);//设置容量为bufer大小 +预留容量（保留10% 如果过小保留 128k）
+  FPBufferStart :=@FBuffer[0];
+  FPBufferEnd :=@FBuffer[BufferSize-1];
+  ClearBufferContent;
+  FFreeCapacity :=FreeCapacity;
+  result :=BufferSize;
+  //FillChar(FBuffer[0],Length(FBuffer),$0);
+end;
+
+procedure TCsvReader.BuildRowIndex();
+var
+  I:integer;
+  PCapEnd: Pansichar;//容量结束指针 缓冲真实容量最结束
+  chkColCount: integer;
+  PE: PAnsichar;
+  PS: PAnsichar;
+  RowCount: integer;
+  PPos: PAnsichar;
+  state: TRowState;
+begin
+   { TODO -oEric : 构建数据索引
+  1 构建行索引
+  2 构建数据索引 }
+    state :=rStart;
+    RowCount :=0;
+    SetLength(FrowIndexArr, 0);
+    PPos :=FPBufferStart;
+    PS :=PPos;
+    PE :=nil;
+    for I := 0 to FPBufferEnd-FPBufferStart do
+    begin
+      //
+      case state of
+        rStart:
+        begin
+          if (PPos^=#10)  then
+          begin
+            if (PPos-1)^=#13 then
+            begin
+              PE :=PPos-1*FCharLength;
+            end else
+            begin
+              PE :=PPos;
+            end;
+            state :=rLEnd;
+          end;
+        end;
+        rLEnd:
+        begin
+          if RowCount=0 then
+          begin
+            //首行判断列数看是否是完整一行的数据
+            chkColCount :=parserData(PS, PE);
+            if chkColCount>=ColCount then
+            begin
+              Setlength(FRowIndexArr, Length(FRowIndexArr)+1);
+              FRowIndexArr[High(FRowIndexArr)].PRowS:= PS;
+              FRowIndexARr[High(FRowIndexArr)].PRowE:= PE;
+            end;
+            inc(RowCount);
+          end else
+          begin
+            inc(RowCount);
+            Setlength(FRowIndexArr, Length(FRowIndexArr)+1);
+            FRowIndexArr[High(FRowIndexArr)].PRowS:= PS;
+            FRowIndexARr[High(FRowIndexArr)].PRowE:= PE;
+          end;
+          State :=rStart;
+          PS :=PPos;
+          PE :=nil;
+        end;
+      end;
+      inc(PPos, FCharLength);
+    end;
+    if PE=nil then
+    begin
+      //最后一行未结束，检查剩余容量
+      PCapEnd :=@FBuffer[High(FBuffer)];
+      PPos :=FPBufferEnd+1;
+      for I:=0 to  PCapEnd-FPBufferEnd do
+      begin
+        if (PPos^=#10)  then
+        begin
+          PE :=PPos;
+          break;
+        end;
+        inc(PPos);
+      end;
+
+    end;
+    if PE<>nil then
+    begin
+      inc(RowCount);
+      Setlength(FRowIndexArr, Length(FrowIndexArr)+1);
+      FRowIndexArr[High(FRowIndexArr)].PRowS:= PS;
+      FRowIndexARr[High(FRowIndexArr)].PRowE:= PE;
+    end;
+end;
+
+procedure TCsvReader.BuildMatrixIndex;
+var
+  Row: integer;
+  BlnFilterData: boolean;
+  J: integer;
+  I: integer;
+  str:string;
+begin
+  FdataIndex.SetMatrix(0, 0);
+   if Assigned(FOnFilterEvent) then
+   begin
+
+     for I := low(FRowIndexArr) to High(FrowIndexArr) do
+     begin
+       parserdata(FRowIndexArr[I].PRowS, FrowIndexArr[I].PRowE);
+       FOnFilterevent(BlnFilterData);
+       if blnFilterData then
+       begin
+         FDataIndex.AppendNewRow(FColumns.Count);
+         Row :=FdataIndex.RowCount;
+         for J := 0 to FCurrentDataRec.Count-1 do
+         begin
+           if (Row=12) and (J=17) then
+           begin
+             row :=Row;
+           end;
+           FDataIndex.DataItem[Row-1, J]:=FCurrentDataRec.PItem[J]^;
+         end;
+       end;
+     end;
+
+   end else
+   begin
+     FDataIndex.SetMatrix(Length(FrowIndexArr), FColumns.Count);
+     for I := low(FRowIndexArr) to High(FrowIndexArr) do
+     begin
+       parserdata(FRowIndexArr[I].PRowS, FrowIndexArr[I].PRowE);
+
+       for J := 0 to FCurrentDataRec.TrueCount-1 do
+       begin
+         FDataIndex.DataItem[I, J] :=FCurrentDataRec.PItem[J]^;
+       end;
+     end;
+   end;
+end;
+
+
+
+procedure TCsvReader.ClearBufferContent();
+begin
+  FillChar(FPBufferStart^,BufferCapacity,$0);
+end;
+
+function TCsvReader.LineIsUTF8: Boolean;
+var
+	raw:RawByteString;
+begin
+  raw :=BuildRawString(PLineStart,PLineEnd);
+  if raw='' then
+  begin	
+    Result :=false;
+  end else
+  if UTF8Decode(raw)<>'' then
+  begin
+  	result := true
+  end else
+  begin
+    result :=true;
+  end;
+end;
+
+function TCsvReader.ReadLine: Boolean;
+
+begin
+  Result :=ReadRow ;
+  if result then
+  begin
+    ParserData(FRowIndex.PRowS,FRowIndex.PRowE);
+  end;
+
+
+end;
+
+procedure TCsvReader.OpenFile(const CSVFile: string; LoadHeader: Boolean;
+  BufferSize: int64);
+
+begin
+  //数据开始位置
+  FDataPos :=0;
+  if Assigned(FS) then FreeAndnil(FS);
+  FColumns.Clear;
+
+  FS :=TFileStream.Create(CSVFile,fmOpenRead);
+  FDataEnd :=False; //重置数据结束标识
+  FFileSize :=Fs.Size; //赋值文件大小
+  //初始化缓冲区
+    FEnCode :=cAnsi;
+  self.BufferSize:= BufferSize;
+  FFreeCharLength :=0;
+
+  ReadToBuffer;
+  if LoadHeader then
+  begin
+    ReadRow;
+    ReadHeader(FRowIndex.PRowS,FRowIndex.PRowE);
+    //skip header   ( data start position)
+    FDataPos :=FRowIndex.RowSize;
+    MoveToFirst;
+  end else
+  begin
+    //不加载header 数据开始位置为0
+    ReadRow;
+    ReadHeader(FRowIndex.PRowS,FRowIndex.PRowE,'Column');
+    FDataPos :=0;
+  end;
+  MoveToFirst();
+
+end;
+
+function TCsvReader.ParserData(const PS, PE: PAnsiChar):integer;
+var
+  State:TColState;
+  PPos:PAnsiChar;
+  PColStart,PColEnd:PAnsiChar;
+  BlnColFirstChar,BlnInQuot:Boolean; //blnInQuto: 在双引号中
+  index :integer;
+begin
+  Index :=0;
+  State :=colStart;
+  BlnColFirstChar:=true;
+  PPos :=PS;
+  PColStart :=PPos;
+  BlnInQuot :=false;
+  FCurrentDataRec.Clear;
+  while State <> cLEnd do
+  begin
+    case State of
+      colStart:
+      begin
+
+        if PPos<PE then
+        begin
+          if (PPos^='"') and BlnColFirstChar then
+          begin
+            Inc(PPos);
+            PColStart :=PPos;
+            BlnColFirstChar :=False;
+            BlnInQuot :=True;
+          end else
+          //if (PPos^=FSplitChar) and ((PPos-FCharLength)^ ='"') then   
+          if (PPos^='"') and ((PPos+FCharLength)^ =SplitChar) and BlnInQuot  then
+          begin
+            PColEnd :=PPos-FCharLength;
+            State :=colEnd;
+            Inc(PPos,2);
+            BlnInQuot :=false;
+          end else
+          if (PPos^=FSplitChar) and (not BlnInQuot) then
+          begin
+            PColend :=PPos-1;
+            State :=colEnd;
+            Inc(PPos);
+          end else
+          begin
+            Inc(PPos);
+          end;
+        end else
+        begin
+          PPos :=PE;
+          PColend :=PPos-1;
+          state :=colEnd;
+        end;
+      end;
+      colEnd:
+      begin
+      	if Index >= FColumns.Count then
+        begin
+          //如果大于列数将 把后面所有数据都赋予最后一列
+          PPos :=PE;
+          PColEnd :=PE;
+          FCurrentDataRec.PItem[Index-1]^.PE :=PColEnd;
+          exit;
+        end else
+        begin
+          FCurrentDataRec.PItem[Index]^.PS :=PColStart;
+          if (PPos>=PE) and (PColEnd^='"') then
+          begin
+            PColEnd :=PColEnd-1;
+          end;
+          FCurrentDataRec.PItem[Index]^.PE :=PColend;
+          Inc(Index);
+        end;
+        PColStart :=PPos;
+        BlnColFirstChar :=true;
+        if PPos<PE then
+        begin
+          State :=colStart;
+          PColStart :=PPos;
+        end else
+        begin
+          State :=cLEnd;
+        end;
+      end
+    end;
+  end;
+  //返回解析的列数
+  result :=index+1;
+  FCurrentDataRec.TrueCount:=Index;
+end;
+
+
+
+procedure TCsvReader.ReadHeader(const PS, PE: PAnsiChar; Header_Prefix: string);
+var
+  State:TColState;
+  ColName:string;
+  PPos:PAnsiChar;
+  PColStart,PColend:PAnsiChar;
+  BlnColFirstChar,BlnInQuot:Boolean; //blnInQuto: 在双引号中 
+  I: Integer;
+  
+begin
+  State :=colStart;
+  BlnColFirstChar:=true;
+  PPos :=PS;
+  FCurrentDataRec.SetDataItemCount(0);
+  PColStart :=PS;
+  BlnInQuot :=false;
+  while State <> cLEnd do
+  begin
+    case State of
+      colStart:
+      begin
+        if PPos<PE then
+        begin
+          if (PPos^='"') and BlnColFirstChar then
+          begin
+            Inc(PPos);
+            PColStart :=PPos;
+            BlnColFirstChar :=False;
+            BlnInQuot :=True;
+          end else
+          if BlnColFirstChar then
+          begin
+          	PColStart :=PPos;
+            BlnColFirstChar :=False;
+          end else
+          if (PPos^=FSplitChar) and ((PPos-FCharLength)^ ='"') and BlnInQuot  then
+          begin
+            PColEnd :=PPos-FCharLength*2;
+            State :=colEnd;
+            Inc(PPos);
+            BlnInQuot :=False;
+           end else
+          if (PPos^=FSplitChar) and (not BlnInQuot) then
+          begin
+            PColend :=PPos-1;
+            State :=colEnd;
+            Inc(PPos);
+          end else
+          begin
+            Inc(PPos);
+          end;
+        end else
+        begin
+          PPos :=PE;
+          PColend :=PPos-1;
+          state :=colEnd;
+        end;
+      end;
+      colEnd:
+      begin
+      	if (PcolEnd-PColStart)>0 then
+        begin
+          if (PPos>=PE) and (PColEnd^='"') then
+          begin
+            PColEnd:=PColEnd-1;
+          end;
+          if Header_Prefix='' then
+            ColName :=ConvertString( BuildRawString(PColStart,PColEnd),FEnCode)
+          else
+            ColName :=Header_Prefix+'_'+IntTostr(FColumns.Count);
+        end else
+        begin
+          ColName :='Column_'+IntTostr(FColumns.Count );
+        end;
+        if FColumns.ColumnExists(ColName) then
+        begin
+          ColName :='Column_'+IntTostr(FColumns.Count );
+        end;
+        FColumns.AddColumn(ColName);
+        FCurrentDataRec.SetDataItemCount(FCurrentDataRec.Count+1);
+        PColStart :=PPos;
+        BlnColFirstChar :=true;
+        if PPos<PE then
+        begin
+          State :=colStart;
+        end else
+        begin
+          State :=cLEnd;
+        end;
+      end
+    end;
+  end;
+
+  {$IFOpt D+}
+   //SendInteger('column count',FColumns.Count);
+   //SendInteger('FCurrentDataRec Count',FCurrentDataRec.Count);
+  {$ENDIF}
+  for I := 0 to FColumns.Count-1 do
+  begin
+    FColumns.ColumnItem[I].PCsvColData :=FCurrentDataRec.PItem[I];
+  end;
+end;
+
+function TCsvReader.ReadRow: Boolean;
+var
+  state:TRowState;
+  PPos:PAnsiChar;
+begin
+  result :=false;
+  //数据结束标识符
+  if FDataEnd then
+  begin
+    exit;
+  end;
+  //结束符为空 赋值为缓冲开始
+  if FPLastLF=nil then
+  begin
+    PPos :=FPBufferStart;
+  end else
+  begin
+    PPos :=FPLastLF +1;
+  end;
+  result :=false;
+    //exit;
+
+  FRowIndex.PRowS :=PPos;
+  state :=rStart;
+  //PLF :=@Fbuffer[FStart];
+  while State<>rLEnd do
+  begin
+    case state of
+      rStart:
+        begin
+          if PPos>=FPBufferEnd then
+          begin
+            State :=rLEnd;
+            PPos :=FPBufferEnd;
+          end else
+          if (PPos^=#10)  then
+          begin
+            if (PPos-1)^=#13 then
+            begin
+              FRowIndex.PRowE :=PPos-1*FCharLength;
+            end else
+            begin
+              FRowIndex.PRowE :=PPos;
+            end;
+            state :=rLEnd;
+            FPLastLF :=PPos;
+          end else
+          if PPos^=#0 then //空字符串
+          begin
+               FRowIndex.PRowE :=PPos;
+               PPos :=FPBufferEnd;
+               State :=rLend;
+               FPLastLF :=FPBufferEnd;
+          end else
+          begin
+            Inc(PPos,FCharLength);
+          end;
+        end;
+        rLEnd:
+        begin
+          Continue;
+        end;
+    end;
+
+  end;
+
+
+  if PPos=FPBufferEnd  then
+  begin
+
+    if FS.Position < FFileSize then
+    begin
+      FFreeCharLength :=FPBufferEnd-FPLastLF;
+      Move((FPLastLF+1)^,FPBufferStart^,FPBufferEnd-FPLastLF);
+      FillChar((FPBufferStart+FFreeCharLength)^,(FPBufferEnd-(FPBufferStart+FFreeCharLength)+1),$0);
+      ReadToBuffer;
+      FPLastLF :=nil;
+      FRowIndex.PRowS :=FPBufferStart;
+      Result :=ReadRow();
+      {if FFreeCharLength>0 then
+      begin
+      	Result :=ReadRow();
+      end else
+      begin
+        result :=true;
+      end;}
+    end else
+    begin
+      FRowIndex.PRowE :=FPBufferEnd;
+      FPLastLF :=FPBufferEnd;
+      FDataEnd :=True;
+
+    end;
+  end;
+
+  if FPRow^.PRowS^<>#0 then
+  begin
+    result :=true;
+  end else
+  begin
+    result :=false;
+  end;
+
+end;
+
+function TCsvReader.ReadToBuffer: Boolean;
+var
+  ReadSize: Int64;
+begin
+
+  ReadSize :=FFileSize-fs.Position;
+  if ReadSize >0 then
+  begin
+    if FBufferSize< ReadSize then
+    begin
+      if FFreeCharLength>0 then
+      begin
+        FS.Read(Fbuffer[FFreeCharLength],FBufferSize-FFreeCharLength);
+      end else
+      begin
+        FS.Read(FBuffer[0],FBufferSize);
+      end;
+    end else
+    begin
+
+      if FFreeCharLength>0  then
+      begin
+        if (ReadSize-FFreeCharLength)<=FBufferSize then
+          FS.Read(Fbuffer[FFreeCharLength],readSize)
+        else
+          FS.Read(FBuffer[FFReeCharLength],ReadSize-FFreeCharLength);
+      end else
+      begin
+        FS.Read(FBuffer[0],ReadSize);
+        FPBufferEnd :=FPBufferStart+ReadSize-1
+      end;
+
+    end;
+
+    result :=true;
+    FPLastLF :=nil;
+  end else
+  begin
+    result :=false;
+  end;
+
+
+end;
+
+
+
+procedure TCsvReader.SetBufferCapacity(AValue: int64);
+begin
+  //
+  if AValue> Length(Fbuffer) then
+  begin
+    SetLength(FBuffer,AValue);
+  end;
+end;
+
+function TCsvReader.GetRowIndexItem(Index :integer): PRowIndex;
+begin
+	result :=@FRowIndexArr[Index];
+end;
+
+function TCsvReader.ReadUnicodeString(const Utf8Str: RawByteString): string;
+begin
+  result :=UTF8Decode(Utf8Str);
+end;
+
+procedure TCsvReader.SetColCount(const Value: Integer);
+var
+  I: Integer;
+  Col:TColumnItem;
+begin
+  FColumns.Clear;
+  FCurrentDataRec.SetDataItemCount(Value);
+  for I := 1 to FCurrentDataRec.Count do
+  begin
+    Col :=FColumns.AddColumn('Column '+Inttostr(I));
+    Col.PCsvColData :=FCurrentDataRec.PItem[I-1];
+  end;
+end;
+
+function TCsvReader.CalBufferSize(PackageCount, FileSize: int64): Int64;
+begin
+  result :=FileSize div PackageCount;
+end;
+
+function TCsvReader.GetBufferCount: int64;
+var
+  BufSize:int64;
+  FileSize:int64;
+begin
+  if Assigned(FS) then
+  begin
+    BufSize :=BufferSize;
+    FileSize :=Fs.Size;
+    if( (FileSize- FDataPos) mod BufSize)=0 then
+      result :=FileSize div BufSize
+    else
+      result :=FFileSize div BufSize +1;
+  end else
+  begin
+    result :=-1;
+  end;
+end;
+
+function TCsvReader.GetPosition: int64;
+begin
+  result :=FS.Position;
+end;
+
+function TCsvReader.GetBufferCapacity: int64;
+begin
+  result :=Length(FBuffer);
+end;
+
+function TCsvReader.GetCellData(Row, Col: int64): PCsvDataItem;
+
+begin
+ { FRowIndex :=FRowIndexArr[Row];
+  ParserData(FrowIndex.PRowS,FRowIndex.PRowE);
+  result :=FCurrentDataRec[Col]; }
+
+  result :=FDataIndex.PDataItem[Row,Col];
+
+end;
+
+function TCsvReader.GetCellString(Row, Col: int64): string;
+var
+  Pitem:PCsvDataItem;
+  ColItem:TColumnItem;
+begin
+  ColItem:=FColumns[Col];
+  {$IFOpt D+}
+    SendInteger('Row',Row);
+    SendInteger('Col',Col);
+    dbugintf.SendSeparator;
+  {$ENDIF}
+  PItem :=FDataIndex.PDataItem[Row,Col];
+
+  result :='';
+  if Assigned(Pitem) and Assigned(ColItem) then
+  begin
+    if ColItem.EnableCodeConvert then
+    begin
+      result :=PItem^.ConvertCode(Colitem.FSCode,colitem.FDCode);
+    end else
+    begin
+      result :=Pitem^.AsUtf8;
+    end;
+
+  end else
+  begin
+    result :='';
+  end;
+end;
+
+function TCsvReader.GetBufferRowCount: int64;
+begin
+  result :=Length(FRowIndexArr);
+end;
+
+procedure TCsvReader.SetBufferSize(Value: int64);
+var
+  FreeCapacity:int64;
+begin
+  FBufferSize :=InitBuffer(Value);
+end;
+
+
+
+
+
+
+
+
+procedure TCsvReader.SetHeaderCount(HeaderCount: Integer);
+begin
+  FCurrentDataRec.SetDataItemCount(HeaderCount);
+end;
+
+
+function TCsvReader.ForeCastBufferRowCount: int64;
+var
+  LineSize:int64;
+  AvgLineSize:Double;
+  cnt:Integer;
+
+begin
+  if Assigned(FS) then
+  begin
+    //取出1000行 根据累计1000行的尺寸 /1000 获得  每行平均大小  缓冲大小/每行平均大小。
+    cnt :=0;
+    LineSize :=0;
+    while ReadLine do
+    begin
+      LineSize :=LineSize + FRowIndex.RowSize;
+      Inc(cnt);
+
+      if cnt>= 1000 then
+      begin
+        break;
+      end;
+    end;
+    AvgLineSize :=LineSize/ cnt;
+    result :=Round(BufferSize/AvgLineSize);
+
+  end else
+  begin
+  	result :=-1;
+  end;
+	
+
+end;
+
+function TCsvReader.GetSize: int64;
+begin
+  //
+  if Assigned(FS) then
+  begin
+    result :=fs.Size;
+  end else
+  begin
+    result :=-1;
+  end;
+end;
+
+function TCsvReader.ForecastLineCount: int64;
+var
+  LineSize:int64;
+  LineCount :int64;
+begin
+  if Assigned(FS) then
+  begin
+    LineSize :=0;
+    LineCount :=0;
+    MoveToFirst;
+    while ReadLine do
+    begin
+      LineSize :=LineSize+FrowIndex.RowSize;
+      Inc(LineCount);
+      if LineCount>=1000 then
+      begin
+        break;
+      end;
+    end;
+    result :=round(fs.Size/ (LineSize/Linecount));
+  end else
+  begin
+    result :=-1;
+  end;
+
+end;
+
+procedure TCsvReader.MoveToBuffer(Index: int64);
+var
+  FilePos:int64;
+  ReadSize:int64;
+begin
+  if Index<self.BufferCount then
+  begin
+    FilePos :=(BufferSize * Index)+self.FDataPos;
+    if FilePos >Fs.Size then
+    begin
+      Fs.Position:=FS.Size;
+    end else
+    begin
+      fs.Position:= FilePos;
+    end;
+    ClearBufferContent;
+    FDataEnd :=false;
+    if fs.Position< FFileSize then
+    begin
+      if BufferCapacity > (FFileSize- (FBufferSize * Index)) then
+        ReadSize :=FFileSize-(BufferSize*Index)
+      else
+        ReadSize :=BufferCapacity;
+      fs.Read(FPBufferStart^,ReadSize);
+    end else
+    begin
+
+     raise exception.Create(' Index Error:'+inttostr(Index)+' FileSize Error:'+inttostr(FFileSize));
+    end;
+    // 读取到buffer
+
+    //ReadRow();
+  end else
+  begin
+    raise Exception.Create(' Index Error'+inttostr(Index));
+  end;
+
+end;
+
+procedure TCsvReader.MoveToFirst;
+begin
+  ClearBufferContent();
+  FS.Position :=FDataPos;	
+  FDataEnd :=false;
+
+
+end;
+
+function TCsvReader.BuildDataIndex():TDataIndex;
+begin
+  BuildRowIndex();
+  BuildMatrixIndex;
+
+
+end;
+
+
+
+
+procedure TCsvReader.ParserRowIndex(const Index: integer);
+begin
+  parserdata(FRowIndexArr[Index].PRowS,FRowIndexArr[Index].PRowE);
+end;
+
+
+
+function TCsvDataItem.Size: int64;
+begin
+  result :=PE-PS+1;
+end;
+
+function TCsvDataItem.AsRawString: RawByteString;
+begin
+  if ((PE-PS+1)>0) and (PE<>PS) then
+  begin
+    SetLength(result,PE-PS+1);
+
+    if PE^ in [#10,#13,','] then
+      PE :=PE-1;
+    Move(PS^,result[1],PE-PS+1);
+  end else
+  begin
+    result :='';
+  end;
+end;
+
+function TCsvDataItem.AsUtf8: UTF8String;
+begin
+  if (Assigned(PE) and Assigned(PS)) and (PE-PS>=0) then
+  begin
+    SetLength(result,PE-PS+1);
+    Move(PS^,result[1],PE-PS+1);
+  end else
+  begin
+    result :='';
+  end;
+end;
+
+function TCsvDataItem.ConvertCode(SEncoding, DEncoding: Tencoding): string;
+var
+  rawBytes:TBytes;
+begin
+	if Assigned(SEncoding) and Assigned(DEncoding) then
+	begin
+		rawBytes :=SEncoding.GetBytes(self.AsUtf8);
+		result :=DEncoding.GetString(rawBytes);
+
+	end else
+	begin
+		result := self.AsUtf8;
+  end;
+end;
+
+constructor TColumnItem.Create(aCollection: TCollection);
+begin
+	inherited ;
+	FEnableCodeConvert := False;
+	FSouceCodePage :=cp_None;
+	FDesCodePage :=cp_None
+end;
+
+destructor TColumnItem.Destroy;
+begin
+  if Assigned(fSCode) then FreeAndNil(FSCode);
+  if Assigned(FDCode) then FreeAndNil(FDCode);
+  inherited;
+end;
+
+procedure TColumnItem.SetEnableCodeConvert(const Value: Boolean);
+begin
+
+	if (Value) And (Value<>FEnableCodeConvert) then
+	begin
+		if (FSouceCodePage<>cp_None) and (FDesCodePage <>cp_None) then
+		begin
+      if Assigned(FSCode) then FreeAndNil(FSCode);
+      if Assigned(fDCode) then FreeAndNil(FDCode);
+			FSCode :=TEncoding.GetEncoding(Integer(FSouceCodePage));
+			FDCode :=TEncoding.GetEncoding(Integer(FDesCodePage));
+		end else
+		begin
+			FSCode :=nil;
+			FDCode :=nil;
+    end;
+	end;
+	FEnableCodeConvert := Value;
+end;
+
+procedure TColumnItem.SetPCsvColData(const Value: PCsvDataItem);
+begin
+	FPCsvColData := Value;
+end;
+
+function TColumnItem.ValueAsByte(): byte;
+begin
+  result :=strToint(FPCsvColData^.AsRawString);
+end;
+
+function TColumnItem.ValueAsSmallInt(): SmallInt;
+begin
+  result :=strToInt(FPCsvColData^.AsRawString);
+end;
+
+function TColumnItem.ValueAsInteger(): integer;
+begin
+ result := strToInt( FPCsvColData^.AsRawString);
+end;
+
+function TColumnItem.ValueAsInt64(): int64;
+begin
+	result :=strtoint64(FPcsvColData^.AsRawString);
+end;
+
+function TColumnItem.ValueAsString(): string;
+begin
+	if FEnableCodeConvert then
+	begin
+		result :=FpCSVColData^.ConvertCode(FSCode,FDCode);
+	end else
+	begin
+		result :=FPCsvColData^.AsRawString;
+	end;
+end;
+
+function TColumnItem.ValueAsFloat(): double;
+begin
+  result :=strtoFloat(FPcsvColData^.AsRawString);
+end;
+
+function TColumnItem.ValueAsDate(): TDate;
+begin
+  result :=strToDate(FPcsvColData^.AsRawString);
+end;
+
+function TColumnItem.ValueAsDateTime(): TDateTime;
+begin
+  result :=strToDateTime(FpcsvColData^.AsRawString);
+end;
+
+function TColumnItem.ReName(const ColumnName: string): boolean;
+var
+  Columns:TColumns;
+  key:string;
+begin
+  Key :=ColumnName;
+  Key :=ReplaceStr(ColKey,#13,'');
+  Key :=ReplaceStr(ColKey,#10,'');
+  Key :=UpperCase(ColKey);
+  Columns:=self.Collection as TColumns;
+  if not Columns.ColumnExists(ColumnName) then
+  begin
+    self.ColumnName:=ColumnName;
+    columns.FHash.Remove(self.ColKey);
+    Columns.FHash.Add(Key,self);
+    result :=true;
+  end else
+  begin
+    result :=false;
+  end;
+end;
+
+
+
+end.

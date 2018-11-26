@@ -1,0 +1,43 @@
+unit seralizeadapter;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils;
+type
+  { TDataNode }
+
+  TDataNode=class(TObject)
+    //
+  protected
+    function GetAttributes(Name: string): string;virtual;abstract;
+    function GetChildItem(Index:integer): TDataNode;virtual;abstract;
+    function GetValue: string;virtual;abstract;
+    procedure SetAttributes(Name: string; AValue: string);virtual;abstract;
+    procedure SetValue(AValue: variant);virtual;abstract;
+    procedure SetValue(AValue: string);virtual;abstract;
+  public
+    function AddChild(const Name:string):TDataNode;
+
+    function ChildCount:integer;virtual;abstract;
+    Property ChildItem[Index:integer]:TDataNode read GetChildItem;
+    property Value:string read GetValue write SetValue;
+    property Attributes[Name:string]:string read GetAttributes write SetAttributes;
+  end;
+
+  TAdapter=class(TObject)
+  public
+    procedure LoadFromFile(const FileName:string);virtual;abstract;
+    procedure SaveToFile(const FileName:string);virtual;abstract;
+  end;
+
+
+
+implementation
+
+
+
+end.
+

@@ -1,0 +1,22 @@
+object DM: TDM
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  OldCreateOrder = False
+  Height = 323
+  HorizontalOffset = 358
+  VerticalOffset = 135
+  Width = 682
+  object zDBCn: TZConnection
+    ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = False
+    Port = 0
+    left = 48
+    top = 56
+  end
+  object zMeta: TZSQLMetadata
+    Connection = zDBCn
+    MetadataType = mdProcedures
+    left = 186
+    top = 62
+  end
+end

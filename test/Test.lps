@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="10"/>
+    <BuildModes Active="Debug"/>
+    <Units Count="29">
+      <Unit0>
+        <Filename Value="Test.ppr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="19" Y="16"/>
+        <UsageCount Value="48"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="testcase1.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TestCase1"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="25" Y="36"/>
+        <UsageCount Value="48"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="objecthash.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ObjectHash"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="24" Y="9"/>
+        <UsageCount Value="46"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="csvreader"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="4"/>
+        <CursorPos X="3" Y="221"/>
+        <UsageCount Value="39"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="testcsvreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TestcsvReader"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="19" Y="50"/>
+        <UsageCount Value="34"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\common\Common.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="37" Y="18"/>
+        <UsageCount Value="20"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2158"/>
+        <CursorPos X="10" Y="2121"/>
+        <UsageCount Value="13"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\codetyphon\typhon\components\BaseUtils\lazfreetypefontcollection.pas"/>
+        <UnitName Value="LazFreeTypeFontCollection"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="8"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win32\classes.pp"/>
+        <UnitName Value="Classes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="114"/>
+        <CursorPos X="56" Y="124"/>
+        <UsageCount Value="8"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\codetyphon\typhon\lcl\forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="8"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="C:\codetyphon\typhon\components\BaseUtils\lazcollections.pas"/>
+        <UnitName Value="lazCollections"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="29" Y="39"/>
+        <UsageCount Value="8"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\codetyphon\typhon\lcl\interfaces\adlcl.pas"/>
+        <UnitName Value="adLCL"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="8"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\fcl-base\src\avl_tree.pp"/>
+        <UnitName Value="AVL_Tree"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="254"/>
+        <CursorPos X="57" Y="267"/>
+        <UsageCount Value="8"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\gtk2\src\atk\atk.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="75"/>
+        <UsageCount Value="8"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\fgl.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="402"/>
+        <CursorPos Y="426"/>
+        <UsageCount Value="15"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\fcl-fpcunit\src\fpcunit.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1051"/>
+        <CursorPos Y="1061"/>
+        <UsageCount Value="10"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="hashitem.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="36" Y="16"/>
+        <UsageCount Value="21"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="243"/>
+        <CursorPos X="3" Y="141"/>
+        <UsageCount Value="11"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\cregist.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="113"/>
+        <CursorPos X="13" Y="124"/>
+        <UsageCount Value="11"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\sysutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="265"/>
+        <CursorPos X="3" Y="274"/>
+        <UsageCount Value="10"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\sysutils\sysutils.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="611"/>
+        <CursorPos X="11" Y="620"/>
+        <UsageCount Value="11"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\sysutils\sysutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="232"/>
+        <CursorPos X="14" Y="241"/>
+        <UsageCount Value="11"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\numlib\src\numlib.pas"/>
+        <UnitName Value="NumLib"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="284"/>
+        <CursorPos X="15" Y="169"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\fcl-fpcunit\src\testutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="E:\usr\local\codetyphon\typhon\components\pl_Graphics32\source\GR32_Blurs.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="885"/>
+        <CursorPos X="16" Y="894"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="E:\usr\local\codetyphon\typhon\lcl\interfaces\qt\interfaces.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="8"/>
+        <CursorPos Y="36"/>
+        <UsageCount Value="10"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="E:\usr\local\codetyphon\typhon\lcl\forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2243"/>
+        <CursorPos Y="2257"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="E:\usr\local\codetyphon\typhon\components\lz_FpcUnitRunner\source\guitestrunner.pas"/>
+        <UnitName Value="GuiTestRunner"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1071"/>
+        <CursorPos X="24" Y="1073"/>
+        <UsageCount Value="10"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\codetyphon\typhon\components\lz_FpcUnitRunner\source\guitestrunner.pas"/>
+        <UnitName Value="GuiTestRunner"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1071"/>
+        <CursorPos X="11" Y="1086"/>
+        <UsageCount Value="10"/>
+      </Unit28>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="109" Column="20" TopLine="99"/>
+      </Position1>
+      <Position2>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="318" Column="3" TopLine="316"/>
+      </Position2>
+      <Position3>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="99" Column="14" TopLine="92"/>
+      </Position3>
+      <Position4>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="342" TopLine="339"/>
+      </Position4>
+      <Position5>
+        <Filename Value="Test.ppr"/>
+        <Caret Line="12"/>
+      </Position5>
+      <Position6>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="330" TopLine="323"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="331" TopLine="323"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="333" TopLine="323"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="336" TopLine="326"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="335" Column="51" TopLine="330"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="330" TopLine="320"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="331" TopLine="320"/>
+      </Position12>
+      <Position13>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="333" TopLine="320"/>
+      </Position13>
+      <Position14>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="335" TopLine="326"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="337" TopLine="330"/>
+      </Position15>
+      <Position16>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="343" TopLine="330"/>
+      </Position16>
+      <Position17>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="344" TopLine="336"/>
+      </Position17>
+      <Position18>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="346" TopLine="336"/>
+      </Position18>
+      <Position19>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="337" Column="8" TopLine="336"/>
+      </Position19>
+      <Position20>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="343" TopLine="336"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="710" Column="20" TopLine="700"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="343" TopLine="335"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="344" TopLine="335"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="348" TopLine="335"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="352" TopLine="340"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="353" TopLine="340"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\common\CSVReader.pas"/>
+        <Caret Line="221" Column="3" TopLine="212"/>
+      </Position27>
+      <Position28>
+        <Filename Value="Test.ppr"/>
+        <Caret Line="16"/>
+      </Position28>
+      <Position29>
+        <Filename Value="Test.ppr"/>
+        <Caret Line="13" Column="25"/>
+      </Position29>
+      <Position30>
+        <Filename Value="Test.ppr"/>
+        <Caret Line="12" Column="33"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\common\CSVReader.pas"/>
+        <Line Value="343"/>
+      </Item1>
+    </BreakPoints>
+    <Watches Count="2">
+      <Item1 ClassAutoCast="True">
+        <Expression Value="FCSV.Size"/>
+      </Item1>
+      <Item2>
+        <Expression Value="FS.Size"/>
+      </Item2>
+    </Watches>
+  </Debugging>
+</CONFIG>

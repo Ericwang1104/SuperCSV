@@ -1,0 +1,458 @@
+unit frm_main;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, KGrids, KGraphics, KHexEditor, Forms, Controls,
+  Graphics, Dialogs, ActnList, ComCtrls, Menus, ExtCtrls, StdCtrls, Buttons,
+  Spin, Grids, Clipbrd, data_module, frm_About, frm_filter, csvreader,
+  csvengine, strutils, eventlog, Types;
+
+type
+
+  { TfrmMain }
+
+  TfrmMain = class(TForm)
+
+
+    actExit: TAction;
+    actClose: TAction;
+    actExport: TAction;
+    actAbout: TAction;
+    actHelp: TAction;
+    actCopy: TAction;
+    actFilterEnable: TAction;
+    actSetFilter: TAction;
+    actOpen: TAction;
+    ActionList1: TActionList;
+    chkSplitFile: TCheckBox;
+    combSplitUnit: TComboBox;
+    ImageList1: TImageList;
+    Grid: TKGrid;
+    MainMenu1: TMainMenu;
+    MenuItem1: TMenuItem;
+    MenuItem10: TMenuItem;
+    MenuItem11: TMenuItem;
+    MenuItem12: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    dlgOpen: TOpenDialog;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    PopupMenu1: TPopupMenu;
+    dlgSave: TSaveDialog;
+    sbtnFirst: TSpeedButton;
+    sbtnPre: TSpeedButton;
+    sbtnNext: TSpeedButton;
+    sbtnLast: TSpeedButton;
+    spEdit: TSpinEdit;
+    spSplitSize: TSpinEdit;
+    stBar: TStatusBar;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton11: TToolButton;
+    ToolButton12: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
+    procedure actAboutExecute(Sender: TObject);
+    procedure actBuildIndexExecute(Sender: TObject);
+    procedure actCloseExecute(Sender: TObject);
+    procedure actCopyExecute(Sender: TObject);
+    procedure actExitExecute(Sender: TObject);
+    procedure actExportExecute(Sender: TObject);
+    procedure actFilterEnableExecute(Sender: TObject);
+    procedure actSetFilterExecute(Sender: TObject);
+    procedure actHelpExecute(Sender: TObject);
+    procedure actOpenExecute(Sender: TObject);
+    procedure chkSplitFileChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure GridClick(Sender: TObject);
+    procedure GridDrawCell(Sender: TObject; ACol, ARow: Integer; R: TRect;
+      State: TKGridDrawState);
+    procedure GridRowHeightsChangedEx(Sender: TObject; AIndex: Integer);
+    procedure GridSelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure MenuItem11Click(Sender: TObject);
+
+    procedure MenuItem3Click(Sender: TObject);
+    procedure MenuItem5Click(Sender: TObject);
+    procedure Panel2Click(Sender: TObject);
+    procedure spEditChange(Sender: TObject);
+    procedure spEditEditingDone(Sender: TObject);
+    procedure sbtnFirstClick(Sender: TObject);
+    procedure sbtnPreClick(Sender: TObject);
+    procedure sbtnNextClick(Sender: TObject);
+    procedure sbtnLastClick(Sender: TObject);
+  private
+    FEngine:TCSVEngine;
+    FLoaedData:boolean;
+    FPageCount :integer;
+    FCurrentPage:integer;
+  public
+    procedure RefreshGrid;
+
+  end;
+
+var
+  frmMain: TfrmMain;
+
+implementation
+
+{$R *.lfm}
+
+{ TfrmMain }
+
+procedure TfrmMain.MenuItem3Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmMain.MenuItem5Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmMain.Panel2Click(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmMain.spEditChange(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmMain.spEditEditingDone(Sender: TObject);
+begin
+  if FLoaedData then
+  begin
+    if spedit.Value <=FEngine.BufferCount then
+    begin
+      Fengine.MoveToBuffer(spEdit.Value-1);
+      FEngine.BuildDataIndex();
+      FcurrentPage :=spEdit.Value;
+      RefreshGrid;
+    end;
+  end;
+end;
+
+procedure TfrmMain.sbtnFirstClick(Sender: TObject);
+begin
+  spedit.Value:= 1;
+  spedit.EditingDone;
+end;
+
+procedure TfrmMain.sbtnPreClick(Sender: TObject);
+begin
+  if spedit.Value >spedit.MinValue then
+  begin
+    spedit.Value:= spedit.Value-1;
+    spedit.EditingDone;
+  end;
+end;
+
+procedure TfrmMain.sbtnNextClick(Sender: TObject);
+begin
+  if spedit.Value <spedit.MaxValue then
+  begin
+    spedit.Value :=spedit.Value +1;
+    spedit.EditingDone;
+  end;
+end;
+
+procedure TfrmMain.sbtnLastClick(Sender: TObject);
+begin
+  spedit.Value:= spedit.MaxValue;
+  spedit.EditingDone;
+end;
+
+procedure TfrmMain.RefreshGrid;
+begin
+  grid.focuscell(1, 1);
+  Fengine.BuildMatrixIndex();
+  //grid.RowCount :=FEngine.BufferRowCount+1;
+  Grid.RowCount:=Fengine.IndexRowCount+1;
+  grid.Refresh;
+end;
+
+procedure TfrmMain.actOpenExecute(Sender: TObject);
+var
+  ForeCastCount:integer;
+  FileName:string;
+  ExtName :string;
+begin
+  //
+  if dlgopen.Execute then
+  begin
+    FileName :=dlgopen.FileName;
+
+    ExtName :=LowerCase( ExtractFileExt(FileName));
+    if ExtName='.csv' then
+    begin
+      FEngine.DelimiterChar:= ',';
+    end else
+    if ExtName='.txt' then
+    begin
+      FEngine.DelimiterChar:= #9;
+    end;
+    actFilterEnable.Checked :=false;
+
+    FEngine.OpenCSVFile(dlgopen.FileName);
+    grid.FixedRows:=1;
+    grid.FixedCols:=1;
+    grid.ColCount:= FEngine.ColCount+1;
+    FPageCount :=FEngine.BufferCount;
+    ForeCastCount :=FEngine.ForeCastBufferRowCount;
+    spedit.MaxValue :=FEngine.BufferCount;
+    spedit.MinValue:= 1;
+    spedit.Value:= 1;
+    fcurrentPage :=spedit.Value-1;
+    FEngine.MoveToBuffer(FcurrentPage);
+    FEngine.BuildDataIndex();
+
+    Grid.RowCount:= FEngine.BufferRowCount+1;
+
+    grid.FocusCell(1,1);
+    stbar.Panels[0].Text:='1 records  '+ 'page '+inttostr(spedit.Value)+' of  '+inttostr(FEngine.BufferCount);
+    FLoaedData :=true;
+  end;
+end;
+
+procedure TfrmMain.chkSplitFileChange(Sender: TObject);
+begin
+  if chkSplitFile.Checked then
+  begin
+    spSplitSize.Enabled :=true;
+    combSplitUnit.Enabled:= true;
+  end else
+  begin
+    spSplitSize.Enabled:=false;
+    combSplitUnit.Enabled:=false;
+  end;
+end;
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+begin
+  FLoaedData :=false;
+  FEngine :=TCSvEngine.Create(nil);
+end;
+
+procedure TfrmMain.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(FEngine);
+end;
+
+procedure TfrmMain.GridClick(Sender: TObject);
+begin
+
+end;
+
+
+
+procedure TfrmMain.GridDrawCell(Sender: TObject; ACol, ARow: Integer;
+  R: TRect; State: TKGridDrawState);
+var
+  Col:TColumnItem;
+begin
+  //
+  GRid.CellPainter.Attributes:=[taEndEllipsis];
+  if FLoaedData then
+  begin
+    if ARow=0 then
+    begin
+      if (ACol>0) and (ACol<=FEngine.ColCount) and ( Fengine.ColCount>0)  then
+      begin
+        grid.CellPainter.Text:=FEngine.ColumnName[ACol-1];
+      end else
+      if ACol=0 then
+      begin
+        Grid.CellPainter.Text:= 'No';
+      end;
+    end else
+    begin
+      //load data
+      if ACol>0 then
+      begin
+        grid.CellPainter.Text:= FEngine.CellData[ARow-1,ACol-1];
+      end else
+      begin
+        Grid.CellPainter.Text:= IntTostr(AROW);
+      end;
+    end;
+  end;
+  Grid.CellPainter.DefaultDraw();
+
+end;
+
+procedure TfrmMain.GridRowHeightsChangedEx(Sender: TObject; AIndex: Integer);
+begin
+end;
+
+procedure TfrmMain.GridSelectCell(Sender: TObject; ACol, ARow: Integer;
+  var CanSelect: Boolean);
+begin
+  stbar.Panels[0].Text:=IntTostr(ARow)+' records  '+ 'page '+inttostr(spedit.value)+' of  '+inttostr(FPageCount);
+end;
+
+procedure TfrmMain.MenuItem11Click(Sender: TObject);
+begin
+
+end;
+
+
+
+
+procedure TfrmMain.actBuildIndexExecute(Sender: TObject);
+begin
+
+end;
+
+procedure TfrmMain.actCloseExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TfrmMain.actCopyExecute(Sender: TObject);
+var
+  RowS,RoWE,RowTemp:integer;
+  str:string;
+  I,J:integer;
+begin
+  RowS :=grid.Selection.Row1-1;
+  RowE :=Grid.Selection.Row2-1;
+  if Rows>RowE then
+  begin
+    RowTEmp :=RowS;
+    RowS :=RowE;
+    RowE :=RowTemp;
+  end;
+  Text :='';
+  for I := RowS to RowE do
+  begin
+    for J := 0 to FEngine.ColCount-1 do
+    begin
+      if J>0 then
+    begin
+         str :=str +#9+FEngine.CellData[I,J];
+      end
+      else
+      begin
+        str :=str+FEngine.CellData[I,J];
+      end;
+    end;
+    {$IFDEF WINDOWS}
+      str :=str+#13+#10;
+    {$ELSE}
+       str :=str+#10;
+    {$ENDIF}
+
+  end;
+
+  Clipboard.AsText:= str;
+end;
+
+procedure TfrmMain.actExitExecute(Sender: TObject);
+begin
+  //
+  if MessageDlg('are you sure exit this program?', mtConfirmation, [mbYes, mbNo],0) = mrYes then
+
+     Application.Terminate;
+end;
+
+procedure TfrmMain.actExportExecute(Sender: TObject);
+var
+  SplitSize:int64;
+
+begin
+  if dlgSave.Execute then
+  begin
+    SplitSize :=0;
+    if chksplitFile.Checked then
+    begin
+      if combSplitUnit.Text='KB'then
+      begin
+        SplitSize :=spsplitSize.Value*1024;
+      end else
+      if combSplitUnit.Text='MB' then
+      begin
+        splitSize :=spSplitSize.Value *1024*1024;
+      end else
+      if combSplitUnit.Text='GB' then
+      begin
+        SplitSize :=spSplitSize.Value *1024*1024*1024;
+      end;
+      FEngine.ExportCSVFile(dlgSave.FileName,true,SplitSize);
+
+    end else
+    begin
+      FEngine.ExportCSVFile(dlgSave.FileName);
+    end;
+    ShowMessage('Export completed!');
+  end;
+end;
+
+procedure TfrmMain.actFilterEnableExecute(Sender: TObject);
+begin
+  //
+  if actFilterEnable.Checked then
+  begin
+    Fengine.FilterActive:=true;
+    RefreshGrid;
+  end else
+  begin
+    FEngine.FilterActive:= false;
+  end;
+end;
+
+procedure TfrmMain.actSetFilterExecute(Sender: TObject);
+var
+  frm:TfrmFilter;
+begin
+  frm :=TfrmFilter.Create(nil);
+  try
+    frm.SetFilterCondition(FEngine);
+    if frm.OK then
+    begin
+      if FEngine.Filter<>frm.Express then
+      begin
+        FEngine.Filter:= frm.Express;
+        if FEngine.FilterActive then
+        begin
+          fengine.FilterActive:=true;
+          RefreshGrid;
+        end;
+      end;
+    end;
+  finally
+    FreeAndNil(frm);
+  end;
+end;
+
+procedure TfrmMain.actHelpExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TfrmMain.actAboutExecute(Sender: TObject);
+begin
+  //
+  frmAbout.ShowModal;
+end;
+
+end.

@@ -1,0 +1,26 @@
+object frmMessyCodeFix: TfrmMessyCodeFix
+  Left = 358
+  Height = 246
+  Top = 247
+  Width = 751
+  Caption = 'Messy code fix'
+  ClientHeight = 246
+  ClientWidth = 751
+  LCLVersion = '1.8.0.6'
+  object Edit1: TEdit
+    Left = 72
+    Height = 25
+    Top = 8
+    Width = 528
+    TabOrder = 0
+    Text = 'Edit1'
+  end
+  object Label1: TLabel
+    Left = 16
+    Height = 17
+    Top = 13
+    Width = 43
+    Caption = 'Source:'
+    ParentColor = False
+  end
+end

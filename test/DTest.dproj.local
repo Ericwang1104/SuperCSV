@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2017/07/03 13:42:12.000.752,=E:\myproject\Mysoftware\common\CSVReader.pas</Transaction>
+    <Transaction>2017/07/03 13:42:12.000.783,=E:\myproject\Mysoftware\common\objecthash.pas</Transaction>
+    <Transaction>2017/07/03 13:42:26.000.957,=E:\myproject\Mysoftware\test\testcase1.pas</Transaction>
+    <Transaction>2017/07/03 13:42:27.000.026,=E:\myproject\Mysoftware\test\testcsvreader.pas</Transaction>
+    <Transaction>2017/07/03 13:47:00.000.108,=E:\myproject\Mysoftware\Dtest\Testtestcase1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

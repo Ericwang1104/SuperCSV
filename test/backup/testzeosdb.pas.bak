@@ -1,0 +1,65 @@
+unit testzeosdb;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, fpcunit, ZConnection, ZSqlMetadata, testutils,
+  testregistry, dbugintf;
+
+type
+
+  { TZeosTests }
+
+  TZeosTests= class(TTestCase)
+  private
+    FzCn:TZConnection;
+    FzMeta:TZSQLMetaData;
+  protected
+    procedure SetUp; override;
+    procedure TearDown; override;
+  published
+    procedure TestHookUp;
+  end;
+
+implementation
+
+procedure TZeosTests.TestHookUp;
+var
+  dbFile:string;
+  I:integer;
+begin
+  dbFile :='E:\Finance\FINANCE.DB';
+  fzcn.Database:= dbFile;
+  FzCn.Protocol:='sqlite-3' ;
+  fzcn.Connected:=true;
+  FzMeta.MetadataType:=mdTables;
+  fzmeta.Catalog:='SELECT TABLE_NAME FROm CataLog';
+  FzMeta.Active:=true;
+
+  while not FzMeta.EOF do
+  begin
+    dbugintf.SendDebug(fzmeta.FieldByName('TABLE_NAME').AsString);
+    FzMeta.Next;
+  end;
+end;
+
+procedure TZeosTests.SetUp;
+begin
+  FzCn :=TZConnection.Create(Nil);
+  FzMeta :=TZSQLMetaData.Create(nil);
+  FzMeta.Connection :=FzCn;
+end;
+
+procedure TZeosTests.TearDown;
+begin
+  FreeAndNil(FzMeta);
+  FreeAndNil(FZCn);
+end;
+
+initialization
+
+  RegisterTest(TZeosTests);
+end.
+

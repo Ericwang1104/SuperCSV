@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="10"/>
+    <PathDelim Value="\"/>
+    <General>
+      <MainUnit Value="0"/>
+      <Title Value="Test"/>
+      <UseAppBundle Value="False"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <Icon Value="0"/>
+    </General>
+    <BuildModes Count="2" Active="Debug">
+      <Item1 Name="Debug" Default="True"/>
+      <Item2 Name="RELEASE">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="Test"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="..\common"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)\$(LCLWidgetType)"/>
+          </SearchPaths>
+          <Parsing>
+            <Style Value="1"/>
+          </Parsing>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <Optimizations>
+              <OptimizationLevel Value="4"/>
+            </Optimizations>
+            <SmallerCode Value="True"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <UseLineInfoUnit Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShowWarn Value="False"/>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+            </Verbosity>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="2">
+      <Item1>
+        <PackageName Value="fpcunitide"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="fpcunittestrunner"/>
+      </Item2>
+    </RequiredPackages>
+    <Units Count="78">
+      <Unit0>
+        <Filename Value="Test.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos Y="12"/>
+        <UsageCount Value="224"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="testcase1.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TestCase1"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="9" Y="7"/>
+        <UsageCount Value="224"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="objecthash.pas"/>
+        <UnitName Value="ObjectHash"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="24" Y="9"/>
+        <UsageCount Value="17"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\common\csvreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1305"/>
+        <CursorPos X="18" Y="1311"/>
+        <UsageCount Value="215"/>
+        <Bookmarks Count="1">
+          <Item0 X="11" Y="740" ID="4"/>
+        </Bookmarks>
+      </Unit3>
+      <Unit4>
+        <Filename Value="testcsvreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TestcsvReader"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="132"/>
+        <CursorPos X="9" Y="93"/>
+        <UsageCount Value="210"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1847"/>
+        <CursorPos X="22" Y="1856"/>
+        <UsageCount Value="50"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\codetyphon\typhon\components\BaseUtils\lazfreetypefontcollection.pas"/>
+        <UnitName Value="LazFreeTypeFontCollection"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="6"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win32\classes.pp"/>
+        <UnitName Value="Classes"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="8"/>
+        <CursorPos Y="21"/>
+        <UsageCount Value="16"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\codetyphon\typhon\lcl\forms.pp"/>
+        <UnitName Value="Forms"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="6"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\codetyphon\typhon\components\BaseUtils\lazcollections.pas"/>
+        <UnitName Value="lazCollections"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="29" Y="39"/>
+        <UsageCount Value="6"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="C:\codetyphon\typhon\lcl\interfaces\adlcl.pas"/>
+        <UnitName Value="adLCL"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="6"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\fcl-base\src\avl_tree.pp"/>
+        <UnitName Value="AVL_Tree"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="254"/>
+        <CursorPos X="57" Y="267"/>
+        <UsageCount Value="6"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\gtk2\src\atk\atk.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="75"/>
+        <UsageCount Value="6"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="C:\codetyphon\typhon\components\lz_FpcUnitRunner\source\guitestrunner.pas"/>
+        <UnitName Value="GuiTestRunner"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="977"/>
+        <CursorPos Y="987"/>
+        <UsageCount Value="18"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\common\objecthash.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ObjectHash"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="98"/>
+        <CursorPos Y="110"/>
+        <UsageCount Value="202"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\streams.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1070"/>
+        <CursorPos X="8" Y="1081"/>
+        <UsageCount Value="4"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\fcl-process\src\dbugintf.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="130"/>
+        <CursorPos X="19" Y="150"/>
+        <UsageCount Value="1"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\bits.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="73"/>
+        <CursorPos X="10" Y="85"/>
+        <UsageCount Value="16"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\lists.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="128"/>
+        <CursorPos X="24" Y="130"/>
+        <UsageCount Value="16"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\systemh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="546"/>
+        <CursorPos X="3" Y="556"/>
+        <UsageCount Value="15"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\common\expressutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="488"/>
+        <CursorPos X="13" Y="495"/>
+        <UsageCount Value="200"/>
+        <Bookmarks Count="1">
+          <Item0 X="3" Y="179" ID="3"/>
+        </Bookmarks>
+      </Unit20>
+      <Unit21>
+        <Filename Value="testexpressparser.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <CursorPos X="65" Y="65"/>
+        <UsageCount Value="200"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\resh.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\sysres.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\astrings.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\sysdl.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\generic.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\threadvr.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\wstrings.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\wstringh.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\ustringh.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\compproc.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\ustrings.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\systhrd.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\sstrings.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\sysos.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\win\syswin.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\text.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\i386\i386.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\system.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\sysutils\syshelph.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="11" Y="4"/>
+        <UsageCount Value="6"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\rtl-objpas\src\inc\variants.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3627"/>
+        <CursorPos X="10" Y="3636"/>
+        <UsageCount Value="6"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\inc\varianth.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="45"/>
+        <CursorPos X="4" Y="26"/>
+        <UsageCount Value="32"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\fcl-base\src\contnrs.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="148"/>
+        <CursorPos X="15" Y="158"/>
+        <UsageCount Value="6"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\typinfo.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="621"/>
+        <CursorPos X="10" Y="630"/>
+        <UsageCount Value="16"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\stringl.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1502"/>
+        <CursorPos X="3" Y="1505"/>
+        <UsageCount Value="5"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="C:\codetyphon\fpcsrc\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="66"/>
+        <CursorPos X="10" Y="76"/>
+        <UsageCount Value="21"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="..\common\csvexpress.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="92"/>
+        <CursorPos X="14" Y="100"/>
+        <UsageCount Value="155"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="testcsvexpress.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="104"/>
+        <CursorPos X="16" Y="113"/>
+        <UsageCount Value="141"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="..\common\csvengine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="124"/>
+        <CursorPos X="21" Y="131"/>
+        <UsageCount Value="124"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="testcsv_engine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="22"/>
+        <CursorPos X="2" Y="32"/>
+        <UsageCount Value="123"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\fgl.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="63"/>
+        <CursorPos X="15" Y="70"/>
+        <UsageCount Value="7"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="C:\lazarus\components\fpcunit\guitestrunner.pas"/>
+        <ComponentName Value="GUITestRunner"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="GuiTestRunner"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="157"/>
+        <CursorPos X="44" Y="177"/>
+        <UsageCount Value="7"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="..\common\xmlverysimple.pas"/>
+        <UnitName Value="xmlVerySimple"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="34"/>
+        <CursorPos X="25" Y="46"/>
+        <UsageCount Value="55"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="..\..\Easycross\common\DynamicObjectBuildUnit.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="7"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="..\common\dynamicobjectbuildunit.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="7"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="E:\DELPHIC\Library\XMLPersistentbak.pas"/>
+        <UnitName Value="XMLPersistent"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="7"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="..\common\xmlPersistent.pas"/>
+        <UnitName Value="XMLPersistent"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="105"/>
+        <CursorPos X="2" Y="118"/>
+        <UsageCount Value="55"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="testxmlpersistent.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13"/>
+        <CursorPos X="28" Y="25"/>
+        <UsageCount Value="55"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="C:\lazarus\components\lazutils\laz_xmlread.pas"/>
+        <UnitName Value="Laz_XMLRead"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="33"/>
+        <CursorPos X="3" Y="35"/>
+        <UsageCount Value="27"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="C:\lazarus\components\lazutils\laz2_dom.pas"/>
+        <UnitName Value="Laz2_DOM"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="299"/>
+        <CursorPos X="5" Y="288"/>
+        <UsageCount Value="27"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="C:\lazarus\components\lazutils\laz2_xmlutils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
+        <UsageCount Value="27"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="511"/>
+        <CursorPos X="3" Y="521"/>
+        <UsageCount Value="7"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="C:\lazarus\components\lazutils\laz2_xmlread.pas"/>
+        <UnitName Value="laz2_XMLRead"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1698"/>
+        <CursorPos X="3" Y="1700"/>
+        <UsageCount Value="27"/>
+        <Bookmarks Count="1">
+          <Item0 X="20" Y="486" ID="2"/>
+        </Bookmarks>
+      </Unit63>
+      <Unit64>
+        <Filename Value="C:\lazarus\components\lazutils\laz_xmlwrite.pas"/>
+        <UnitName Value="Laz_XMLWrite"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="45" Y="39"/>
+        <UsageCount Value="27"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\objpas\typinfo.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="32"/>
+        <CursorPos X="8" Y="42"/>
+        <UsageCount Value="26"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="..\common\intf_seralizeadapter.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="14"/>
+        <CursorPos X="35" Y="33"/>
+        <UsageCount Value="52"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="..\common\fpc_seralizeadapter.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <CursorPos X="3" Y="46"/>
+        <UsageCount Value="52"/>
+        <Bookmarks Count="1">
+          <Item0 X="3" Y="104" ID="1"/>
+        </Bookmarks>
+      </Unit67>
+      <Unit68>
+        <Filename Value="testfpc_seralizeadapter_test.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="24"/>
+        <CursorPos Y="38"/>
+        <UsageCount Value="46"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="..\common\seralizeadapter.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit69>
+      <Unit70>
+        <Filename Value="C:\lazarus\lcl\interfacebase.pp"/>
+        <UnitName Value="InterfaceBase"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="22"/>
+        <CursorPos X="19" Y="26"/>
+        <UsageCount Value="10"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="C:\lazarus\fpc\3.0.2\source\rtl\inc\objpash.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="272"/>
+        <CursorPos X="8" Y="283"/>
+        <UsageCount Value="10"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="testzeosdb.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="32"/>
+        <CursorPos X="2" Y="38"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+      </Unit72>
+      <Unit73>
+        <Filename Value="C:\fpcupdeluxe\ccr\zeos\src\component\ZConnection.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="70"/>
+        <CursorPos X="14" Y="78"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit73>
+      <Unit74>
+        <Filename Value="C:\fpcupdeluxe\ccr\zeos\src\component\ZAbstractConnection.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="425"/>
+        <CursorPos X="3" Y="433"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit74>
+      <Unit75>
+        <Filename Value="C:\fpcupdeluxe\ccr\zeos\src\core\ZURL.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="63"/>
+        <CursorPos X="14" Y="71"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit75>
+      <Unit76>
+        <Filename Value="C:\fpcupdeluxe\ccr\zeos\src\component\ZSqlMetadata.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="114"/>
+        <CursorPos X="63" Y="65"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit76>
+      <Unit77>
+        <Filename Value="C:\fpcupdeluxe\lazarus\components\fpcunit\guitestrunner.pas"/>
+        <UnitName Value="GuiTestRunner"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="979"/>
+        <CursorPos Y="987"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit77>
+    </Units>
+    <OtherDefines Count="1">
+      <Define0 Value="-wg"/>
+    </OtherDefines>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="41" TopLine="28"/>
+      </Position1>
+      <Position2>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="40" TopLine="28"/>
+      </Position2>
+      <Position3>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="41" TopLine="28"/>
+      </Position3>
+      <Position4>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="43" TopLine="28"/>
+      </Position4>
+      <Position5>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="40" Column="39" TopLine="28"/>
+      </Position5>
+      <Position6>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="32" TopLine="28"/>
+      </Position6>
+      <Position7>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="33" TopLine="28"/>
+      </Position7>
+      <Position8>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="34" TopLine="28"/>
+      </Position8>
+      <Position9>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="35" TopLine="28"/>
+      </Position9>
+      <Position10>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="36" TopLine="28"/>
+      </Position10>
+      <Position11>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="37" TopLine="28"/>
+      </Position11>
+      <Position12>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="38" TopLine="28"/>
+      </Position12>
+      <Position13>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="40" TopLine="28"/>
+      </Position13>
+      <Position14>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="37" Column="13" TopLine="28"/>
+      </Position14>
+      <Position15>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="40" TopLine="28"/>
+      </Position15>
+      <Position16>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="41" TopLine="28"/>
+      </Position16>
+      <Position17>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="40" TopLine="28"/>
+      </Position17>
+      <Position18>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="41" TopLine="28"/>
+      </Position18>
+      <Position19>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="40" TopLine="28"/>
+      </Position19>
+      <Position20>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="41" TopLine="28"/>
+      </Position20>
+      <Position21>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="43" TopLine="28"/>
+      </Position21>
+      <Position22>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="41" Column="43" TopLine="28"/>
+      </Position22>
+      <Position23>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="33" TopLine="28"/>
+      </Position23>
+      <Position24>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="34" TopLine="28"/>
+      </Position24>
+      <Position25>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="35" TopLine="28"/>
+      </Position25>
+      <Position26>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="36" TopLine="28"/>
+      </Position26>
+      <Position27>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="37" TopLine="28"/>
+      </Position27>
+      <Position28>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="38" TopLine="28"/>
+      </Position28>
+      <Position29>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="39" TopLine="28"/>
+      </Position29>
+      <Position30>
+        <Filename Value="testzeosdb.pas"/>
+        <Caret Line="42" Column="56" TopLine="35"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="Test"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="..\common"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)\$(LCLWidgetType)"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <IncludeAssertionCode Value="True"/>
+      </SyntaxOptions>
+    </Parsing>
+    <CodeGeneration>
+      <Checks>
+        <IOChecks Value="True"/>
+        <RangeChecks Value="True"/>
+        <OverflowChecks Value="True"/>
+        <StackChecks Value="True"/>
+      </Checks>
+      <VerifyObjMethodCallValidity Value="True"/>
+      <Optimizations>
+        <OptimizationLevel Value="0"/>
+      </Optimizations>
+    </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <UseHeaptrc Value="True"/>
+      </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <Verbosity>
+        <ShowWarn Value="False"/>
+        <ShowNotes Value="False"/>
+        <ShowHints Value="False"/>
+      </Verbosity>
+      <WriteFPCLogo Value="False"/>
+      <OtherDefines Count="1">
+        <Define0 Value="-wg"/>
+      </OtherDefines>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="testzeosdb.pas"/>
+        <Line Value="38"/>
+      </Item1>
+    </BreakPoints>
+    <Watches Count="2">
+      <Item1>
+        <Expression Value="index"/>
+      </Item1>
+      <Item2>
+        <Expression Value="str[10]"/>
+      </Item2>
+    </Watches>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

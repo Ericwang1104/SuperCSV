@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Count="1" Active="DEBUG">
+      <Item1 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="SuperCSV"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="..\common;E:\GitHub\MorMot\"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <Optimizations>
+              <OptimizationLevel Value="4"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item1>
+    </BuildModes>
+    <Units Count="38">
+      <Unit0>
+        <Filename Value="SuperCSV.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos X="23" Y="21"/>
+        <UsageCount Value="194"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="frm_main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="56" Y="11"/>
+        <UsageCount Value="204"/>
+        <Bookmarks Count="1">
+          <Item0 X="45" Y="371" ID="1"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\common\csvreader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="7"/>
+        <CursorPos X="3" Y="1514"/>
+        <UsageCount Value="204"/>
+        <Bookmarks Count="7">
+          <Item0 X="25" Y="1530" ID="5"/>
+          <Item1 X="15" Y="282"/>
+          <Item2 X="41" Y="76" ID="4"/>
+          <Item3 X="9" Y="1556" ID="6"/>
+          <Item4 X="9" Y="1560" ID="7"/>
+          <Item5 X="18" Y="992" ID="2"/>
+          <Item6 X="3" Y="1067" ID="3"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="data_module.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DM"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="9" Y="4"/>
+        <UsageCount Value="204"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\common\objecthash.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ObjectHash"/>
+        <EditorIndex Value="8"/>
+        <UsageCount Value="204"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="frm_about.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmAbout"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="frm_About"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
+        <CursorPos Y="45"/>
+        <UsageCount Value="204"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\common\csvengine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="57"/>
+        <CursorPos X="34" Y="68"/>
+        <UsageCount Value="269"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\common\csvexpress.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="75"/>
+        <CursorPos X="38" Y="79"/>
+        <UsageCount Value="269"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\common\expressutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="97"/>
+        <CursorPos X="25" Y="505"/>
+        <UsageCount Value="269"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="frm_filter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmFilter"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="10" Y="11"/>
+        <UsageCount Value="266"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="frm_csvdset.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCsvSet"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="frm_CSVDSet"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="14" Y="13"/>
+        <UsageCount Value="210"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="frm_ddatabasesetting.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmDataBaseSet"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="frm_Ddatabasesetting"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="13"/>
+        <CursorPos X="88" Y="4"/>
+        <UsageCount Value="186"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="datareplace_wizard.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="26" Y="10"/>
+        <UsageCount Value="181"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="frm_progress.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmProgress"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="41"/>
+        <CursorPos X="28" Y="59"/>
+        <UsageCount Value="165"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="frm_messycodefix.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmMessyCodeFix"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="23" Y="17"/>
+        <UsageCount Value="160"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="frm_defineheader.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmDefineHeader"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="48"/>
+        <CursorPos X="23" Y="61"/>
+        <UsageCount Value="40"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="frm_replacecondition.pas"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <CursorPos X="3" Y="53"/>
+        <UsageCount Value="25"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="FastCSV.ppr"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos X="30" Y="14"/>
+        <UsageCount Value="155"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="unit1.pas"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Unit1"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="5"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="unit2.pas"/>
+        <ComponentName Value="Form2"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Unit2"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <UsageCount Value="5"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="C:\codetyphon\typhon\components\pl_KControls\source\kgrids.pas"/>
+        <UnitName Value="KGrids"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6688"/>
+        <CursorPos X="41" Y="6699"/>
+        <UsageCount Value="6"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="863"/>
+        <CursorPos X="15" Y="875"/>
+        <UsageCount Value="2"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="C:\codetyphon\fpcsrc\rtl\objpas\classes\streams.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="59"/>
+        <CursorPos X="8" Y="65"/>
+        <UsageCount Value="2"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="C:\fpcupdeluxe\fpcsrc\rtl\inc\currh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="14"/>
+        <CursorPos X="14" Y="23"/>
+        <UsageCount Value="6"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="C:\fpcupdeluxe\fpcsrc\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="475"/>
+        <CursorPos X="14" Y="500"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="C:\fpcupdeluxe\ccr\zeos\src\component\ZGroupedConnection.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="86"/>
+        <CursorPos X="48" Y="94"/>
+        <UsageCount Value="6"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="C:\fpcupdeluxe\lazarus\components\kgrid\source\kgrids.pas"/>
+        <UnitName Value="KGrids"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="9429"/>
+        <CursorPos Y="9443"/>
+        <UsageCount Value="4"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\fpcupdeluxe\fpcsrc\rtl\objpas\sysutils\sysencodingh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="68"/>
+        <CursorPos X="20" Y="79"/>
+        <UsageCount Value="1"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\fpcupdeluxe\fpcsrc\rtl\objpas\sysutils\sysencoding.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="281"/>
+        <CursorPos X="25" Y="287"/>
+        <UsageCount Value="1"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\fpcupdeluxe\fpcsrc\rtl\win\wininc\redef.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="245"/>
+        <CursorPos X="3" Y="105"/>
+        <UsageCount Value="1"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="C:\fpcupdeluxe\fpcsrc\rtl\win32\classes.pp"/>
+        <UnitName Value="Classes"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="8"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\containedaction.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="87"/>
+        <CursorPos Y="100"/>
+        <UsageCount Value="8"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="C:\fpcupdeluxe\lazarus\lcl\include\customaction.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="235"/>
+        <CursorPos Y="247"/>
+        <UsageCount Value="8"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="..\common\common.pas"/>
+        <UnitName Value="Common"/>
+        <TopLine Value="136"/>
+        <CursorPos X="30" Y="152"/>
+        <UsageCount Value="14"/>
+        <Loaded Value="True"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="E:\GitHub\MorMot\SQLite3\mORMot.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1197"/>
+        <CursorPos X="2" Y="1208"/>
+        <UsageCount Value="10"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="C:\fpcupdeluxe\ccr\mORMot\SQLite3\mORMot.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="1197"/>
+        <CursorPos X="2" Y="1208"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="C:\fpcupdeluxe\ccr\mORMot\SynCommons.pas"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="E:\GitHub\WEbDriver4D\JsonDataObjects.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="27"/>
+        <CursorPos X="7" Y="38"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit37>
+    </Units>
+    <JumpHistory Count="16" HistoryIndex="15">
+      <Position1>
+        <Filename Value="..\common\csvreader.pas"/>
+        <Caret Line="13" Column="32"/>
+      </Position1>
+      <Position2>
+        <Filename Value="..\common\csvreader.pas"/>
+        <Caret Line="63" Column="3" TopLine="52"/>
+      </Position2>
+      <Position3>
+        <Filename Value="..\common\csvreader.pas"/>
+        <Caret Line="68" Column="48" TopLine="52"/>
+      </Position3>
+      <Position4>
+        <Filename Value="..\common\csvreader.pas"/>
+        <Caret Line="54" Column="15" TopLine="37"/>
+      </Position4>
+      <Position5>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="11" Column="57"/>
+      </Position5>
+      <Position6>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="10" Column="12"/>
+      </Position6>
+      <Position7>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="11" Column="57"/>
+      </Position7>
+      <Position8>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="10" Column="43"/>
+      </Position8>
+      <Position9>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="11" Column="58"/>
+      </Position9>
+      <Position10>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="9" Column="43"/>
+      </Position10>
+      <Position11>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="14" Column="14"/>
+      </Position11>
+      <Position12>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="11" Column="63"/>
+      </Position12>
+      <Position13>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="15" Column="62"/>
+      </Position13>
+      <Position14>
+        <Filename Value="frm_main.pas"/>
+        <Caret Line="11" Column="57"/>
+      </Position14>
+      <Position15>
+        <Filename Value="E:\GitHub\WEbDriver4D\JsonDataObjects.pas"/>
+        <Caret Line="40" Column="24" TopLine="27"/>
+      </Position15>
+      <Position16>
+        <Filename Value="E:\GitHub\WEbDriver4D\JsonDataObjects.pas"/>
+        <Caret Line="32" Column="28" TopLine="189"/>
+      </Position16>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="4">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="FastCSV.lpr"/>
+        <Line Value="27"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\common\csvengine.pas"/>
+        <Line Value="283"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\common\csvengine.pas"/>
+        <Line Value="314"/>
+      </Item3>
+      <Item4>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\common\csvreader.pas"/>
+        <Line Value="1499"/>
+      </Item4>
+    </BreakPoints>
+    <Watches Count="3">
+      <Item1>
+        <Expression Value="PColStart"/>
+      </Item1>
+      <Item2>
+        <Expression Value="PE"/>
+      </Item2>
+      <Item3>
+        <Expression Value="PS"/>
+      </Item3>
+    </Watches>
+  </Debugging>
+</CONFIG>

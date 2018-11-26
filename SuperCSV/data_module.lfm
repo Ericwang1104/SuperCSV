@@ -1,0 +1,10 @@
+object DM: TDM
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  OldCreateOrder = False
+  Height = 323
+  HorizontalOffset = 358
+  VerticalOffset = 135
+  Width = 682
+  PPI = 96
+end

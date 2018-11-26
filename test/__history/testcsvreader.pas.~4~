@@ -1,0 +1,149 @@
+unit TestcsvReader;
+{$IFDEF  FPC}
+{$mode objfpc}{$H+}
+ {$ENDIF}
+interface
+
+uses
+{$IFDEF  FPC}
+  Classes, SysUtils, CSVReader, fpcunit,  testregistry;
+{$ELSE}
+  TestFramework, classes,CSVReader, GuiTestRunner, SysUtils;
+{$ENDIF}
+
+type
+
+  { TCSVReaderTest }
+  TCSVReaderTest = class(TTestCase)
+  private
+    FCSV: TCsvReader;
+    function GetCSVFileName:string;
+  public
+    procedure SetUp; override;
+    procedure TearDown; override;
+  published
+    procedure TestReadCSV;
+    procedure TestCSVFastView;
+    procedure GetCSVSize;
+    procedure GetLineCount;
+    procedure TestCheckMoveFirst;
+    procedure TestForeCastBufferLineCount;
+  end;
+
+implementation
+
+procedure TCSVReaderTest.TestCheckMoveFirst;
+var
+  FileName :string;
+  RowCount1,RowCount2:int64;
+begin
+  FileName :=GetCSVFileName;
+  FCSV.OpenFile(FileName);
+  RowCount1 :=0;
+  while fcsv.ReadLine do
+  begin
+    Inc(RowCount1);
+  end;
+
+  fcsv.MoveToFirst;
+  RowCount2 :=0;
+  while fcsv.ReadLine do
+  begin
+  	Inc(RowCount2);
+  end;
+
+  CheckEquals(RowCount1,RowCount2);
+end;
+
+procedure TCSVReaderTest.TestReadCSV;
+var
+  FileName:string;
+  FieldValue:string;
+begin
+
+  FileName :=GetCSVFileName;
+  FCSV.OpenFile(FileName,true);
+  while FCSV.ReadLine do
+  begin
+    FieldValue :=FCSV.Columns.ColumnItem[0].PCsvColData^.AsRawString;
+  end;
+end;
+
+function TCSVReaderTest.GetCSVFileName: string;
+var
+  FileName:string;
+begin
+  {$IFDEF DARWIN}
+    result :='/Users/wangchong/Downloads/2017-06-12-000028_120_RDE_2017-06-12_full.csv';
+  {$ELSE}
+    result:='E:\WIFIDATA\Data\2017-06-12-000028_120_RDE_2017-06-12_full.csv';
+  {$ENDIF}
+end;
+
+procedure TCSVReaderTest.SetUp;
+begin
+
+  FCSV := TCSVReader.Create();
+end;
+
+procedure TCSVReaderTest.TearDown;
+begin
+
+  FreeAndNil(FCSV);
+end;
+
+procedure TCSVReaderTest.TestCSVFastView;
+var
+  FileName:string;
+begin
+  //
+  FileName :=GetCSVFileName;
+  FCSV.OpenFile(FileName,true);
+  FCSV.ReadLine;
+end;
+
+procedure TCSVReaderTest.GetCSVSize;
+var
+  FileName:string;
+begin
+  FileName :=GetCSVFileName;
+  FCSV.OpenFile(FileName,true);
+  CheckEquals(FCSV.Size,1054682735 );
+end;
+
+procedure TCSVReaderTest.GetLineCount;
+var
+	FileName:string;
+  LineCount:Int64;
+begin
+  FileName :=GetCSVFileName;
+  FCSV.OpenFile(FileName);
+  LineCount :=0;
+  while FCSV.ReadLine do
+  begin
+  	Inc(LineCount);
+  end;
+  	
+    
+end;
+
+procedure TCSVReaderTest.TestForeCastBufferLineCount;
+var
+	FileName:string;
+  Count :Int64;
+begin
+	FileName :=GetCSVFileName;
+  FCSV.OpenFile(FileName);
+  Count :=FCSV.ForeCastBufferCount;
+end;
+
+
+
+initialization
+{$IFDEF  FPC}
+  RegisterTest(TCSVReaderTest);
+{$ELSE}
+  RegisterTest(TCsvReaderTest.Suite);
+{$ENDIF}
+end.
+

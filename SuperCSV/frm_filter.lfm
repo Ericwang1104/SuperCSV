@@ -1,0 +1,161 @@
+object frmFilter: TfrmFilter
+  Left = 371
+  Height = 343
+  Top = 122
+  Width = 435
+  BorderStyle = bsDialog
+  Caption = 'filter condition'
+  ClientHeight = 343
+  ClientWidth = 435
+  LCLVersion = '1.7'
+  object VarList: TListBox
+    Left = 16
+    Height = 241
+    Top = 32
+    Width = 128
+    ItemHeight = 0
+    TabOrder = 0
+  end
+  object combOperator: TComboBox
+    Left = 160
+    Height = 25
+    Top = 56
+    Width = 76
+    ItemHeight = 17
+    ItemIndex = 0
+    Items.Strings = (
+      '='
+      'contains'
+      'left contains'
+      'right contains'
+      '>'
+      '<'
+      '>='
+      '<='
+    )
+    Style = csDropDownList
+    TabOrder = 1
+    Text = '='
+  end
+  object Button1: TButton
+    Left = 240
+    Height = 25
+    Top = 304
+    Width = 75
+    Caption = 'ok'
+    Default = True
+    OnClick = Button1Click
+    TabOrder = 2
+  end
+  object Button2: TButton
+    Left = 352
+    Height = 25
+    Top = 304
+    Width = 75
+    Cancel = True
+    Caption = 'cancel'
+    OnClick = Button2Click
+    TabOrder = 3
+  end
+  object Label1: TLabel
+    Left = 16
+    Height = 17
+    Top = 8
+    Width = 69
+    Caption = 'variable list:'
+    ParentColor = False
+  end
+  object txtValue: TEdit
+    Left = 255
+    Height = 25
+    Top = 32
+    Width = 163
+    TabOrder = 4
+  end
+  object memExpress: TMemo
+    Left = 255
+    Height = 185
+    Top = 88
+    Width = 163
+    OnChange = memExpressChange
+    TabOrder = 5
+  end
+  object Label2: TLabel
+    Left = 152
+    Height = 17
+    Top = 32
+    Width = 52
+    Caption = 'operator'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 255
+    Height = 17
+    Top = 8
+    Width = 35
+    Caption = 'Value:'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 255
+    Height = 17
+    Top = 64
+    Width = 48
+    Caption = 'Express:'
+    ParentColor = False
+  end
+  object btnAdd: TButton
+    Left = 160
+    Height = 25
+    Top = 88
+    Width = 75
+    Caption = 'Add'
+    OnClick = btnAddClick
+    TabOrder = 6
+  end
+  object btnAnd: TButton
+    Left = 160
+    Height = 25
+    Top = 120
+    Width = 75
+    Caption = 'AND'
+    OnClick = btnAndClick
+    TabOrder = 7
+  end
+  object btnOR: TButton
+    Left = 161
+    Height = 25
+    Top = 152
+    Width = 75
+    Caption = 'OR'
+    OnClick = btnORClick
+    TabOrder = 8
+  end
+  object btnNOT: TButton
+    Left = 160
+    Height = 25
+    Top = 184
+    Width = 75
+    Caption = 'NOT'
+    OnClick = btnNOTClick
+    TabOrder = 9
+  end
+  object btnLeftBracket: TButton
+    Left = 161
+    Height = 25
+    Top = 216
+    Width = 75
+    Caption = '('
+    OnClick = btnLeftBracketClick
+    TabOrder = 10
+  end
+  object btnRightBracket: TButton
+    Left = 160
+    Height = 25
+    Top = 248
+    Width = 75
+    Caption = ')'
+    OnClick = btnRightBracketClick
+    TabOrder = 11
+  end
+end

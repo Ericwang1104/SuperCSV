@@ -1,0 +1,88 @@
+unit TestcsvReader;
+{$IFDEF  FPC}
+{$mode objfpc}{$H+}
+ {$ENDIF}
+interface
+
+uses
+{$IFDEF  FPC}
+  Classes, SysUtils, CSVReader, fpcunit,  testregistry;
+{$ELSE}
+	TestFramework, classes, GuiTestRunner, SysUtils;
+{$ENDIF}
+
+type
+
+  { TCSVReaderTest }
+
+  TCSVReaderTest = class(TTestCase)
+  private
+    FCSV: TCsvReader;
+  public
+    procedure SetUp; override;
+    procedure TearDown; override;
+  published
+    procedure TestReadCSV;
+
+    procedure CSVSeek;
+    procedure GetCSVSize;
+  end;
+
+implementation
+
+procedure TCSVReaderTest.TestReadCSV;
+var
+  FileName:string;
+  FieldValue:string;
+begin
+
+  {$IFDEF MAC}
+    FileName :='/Users/wangchong/Downloads/2017-06-12-000028_120_RDE_2017-06-12_full.csv';
+  {$ELSE}
+    FileName:='E:\WIFIDATA\Data\2017-06-12-000028_120_RDE_2017-06-12_full.csv';
+  {$ENDIF}
+  FCSV.OpenFile(FileName,true);
+  while FCSV.ReadLine do
+  begin
+    FieldValue :=FCSV.Columns.ColumnItem[0].PCsvColData^.AsRawString;
+  end;
+end;
+
+procedure TCSVReaderTest.SetUp;
+begin
+
+  FCSV := TCSVReader.Create();
+end;
+
+procedure TCSVReaderTest.TearDown;
+begin
+
+  FreeAndNil(FCSV);
+end;
+
+procedure TCSVReaderTest.CSVSeek;
+begin
+  //
+
+end;
+
+procedure TCSVReaderTest.GetCSVSize;
+var
+  FileName:string;
+begin
+  {$IFDEF MAC}
+    FileName :='/Users/wangchong/Downloads/2017-06-12-000028_120_RDE_2017-06-12_full.csv';
+  {$ELSE}
+    FileName:='E:\WIFIDATA\Data\2017-06-12-000028_120_RDE_2017-06-12_full.csv';
+  {$ENDIF}
+  FCSV.OpenFile(FileName,true);
+  CheckEquals(FCSV.Size,1054682735 );
+end;
+
+
+
+initialization
+
+  RegisterTest(TCSVReaderTest);
+end.
+

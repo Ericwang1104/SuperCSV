@@ -1,0 +1,53 @@
+object frmAbout: TfrmAbout
+  Left = 396
+  Height = 263
+  Top = 250
+  Width = 389
+  BorderStyle = bsDialog
+  Caption = 'about'
+  ClientHeight = 263
+  ClientWidth = 389
+  LCLVersion = '6.1'
+  object Label1: TLabel
+    Left = 32
+    Height = 12
+    Top = 16
+    Width = 96
+    Caption = 'Fast CSV ver:1.0'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 32
+    Height = 12
+    Top = 48
+    Width = 102
+    Caption = 'author: wangchong'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 32
+    Height = 12
+    Top = 80
+    Width = 108
+    Caption = 'Email:wac@yeah.net'
+    ParentColor = False
+    OnClick = Label3Click
+  end
+  object Label4: TLabel
+    Left = 32
+    Height = 12
+    Top = 112
+    Width = 192
+    Caption = 'homepage:http://www.easystda.com'
+    ParentColor = False
+  end
+  object btnClose: TButton
+    Left = 128
+    Height = 25
+    Top = 200
+    Width = 75
+    Caption = 'ok'
+    OnClick = btnCloseClick
+    TabOrder = 0
+  end
+end
